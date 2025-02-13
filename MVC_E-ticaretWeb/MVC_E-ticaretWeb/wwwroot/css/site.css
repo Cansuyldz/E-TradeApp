@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+.user-card {
+    display: none;
+    width: 250px;
+    right: 10px;
+    top: 60px;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+}

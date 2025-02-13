@@ -1,0 +1,41 @@
+﻿/* Sayfa ortalama */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Kart tasarımı */
+.login-card {
+    max-width: 750px;
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+/* Resmi ortala */
+.login-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .login-image img {
+        max-width: 60%;
+        height: auto;
+    }
+
+/* Buton tasarımı */
+.btn-custom {
+    background: #c19752;
+    color: white;
+    border-radius: 25px;
+    width: 100%;
+}
+
+    .btn-custom:hover {
+        background: #a57d40;
+    }

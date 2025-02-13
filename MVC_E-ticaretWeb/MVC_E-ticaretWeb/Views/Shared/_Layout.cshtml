@@ -77,9 +77,21 @@
                     </a>
 
                     <!-- Kullanıcı Butonu -->
-                    <a href="#" class="btn btn-outline-secondary" title="hesap">
+                    <a href="#" class="btn btn-outline-secondary" title="hesap" id="userIcon">
                         <i class="bi bi-person"></i>
                     </a>
+
+                    <!-- Kullanıcı Kartı -->
+                    <div id="userCard" class="card position-absolute user-card shadow-sm">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Hoş Geldiniz</h5>
+                            <p class="card-text">Lütfen giriş yapın veya üye olun.</p>
+                            <a href="/Account/Login" class="btn btn-primary w-100 mb-2">Giriş Yap</a>
+                            <a href="/Account/Register" class="btn btn-secondary w-100">Üye Ol</a>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
@@ -102,8 +114,9 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
