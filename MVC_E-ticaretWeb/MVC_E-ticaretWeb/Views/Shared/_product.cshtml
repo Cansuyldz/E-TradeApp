@@ -1,0 +1,17 @@
+﻿@model Product
+<div class="card position-relative">
+    <img src="@Model.Image" alt="" class="card-img-top" width="150px" height="150px">
+
+    <!-- Favori Butonu -->
+   
+
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Price</p>
+        <a href="#" class="btn btn-primary">Sepete ekle</a> <button class="btn btn-light position-absolute end-30">
+            ❤️
+        </button>
+    </div>
+</div>
+
+    

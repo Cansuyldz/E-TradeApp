@@ -1,0 +1,40 @@
+﻿@using MVC_E_ticaretWeb.ViewModels
+@model ProductViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+    List<Product> products = Model.Products;
+    List<Category> categories = Model.Categories;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group">
+                @foreach (var item in categories)
+                {
+                    <a href="" class="list-group-item list-group-item-action">@item.Name</a>
+                }
+            </div>
+        </div>
+        <div class="col-md-9">
+            @if (products.Count == 0)
+            {
+                @Html.Partial("_noProduct")
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var item in products)
+                    {
+                        <div class="col-md-3">
+                            @Html.Partial("_product", item)
+                        </div>
+
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
