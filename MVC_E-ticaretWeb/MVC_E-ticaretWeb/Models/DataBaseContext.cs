@@ -10,7 +10,6 @@ namespace MVC_E_ticaretWeb.Models
         }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }  
-        public DbSet<Guest> Guests { get; set; }  
         public DbSet<Category> Categories { get; set; }  
 
     }

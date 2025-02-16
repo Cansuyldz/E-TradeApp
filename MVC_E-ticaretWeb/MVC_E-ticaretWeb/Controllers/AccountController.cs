@@ -12,12 +12,12 @@ namespace MVC_E_ticaretWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(Guest g)
+        public IActionResult Login(User u)
         {
-            var guest = _context.Guests
-                 .FirstOrDefault(x => x.Mail == g.Mail && x.Mail == g.Mail);
+            var user = _context.Users
+                 .FirstOrDefault(x => x.Mail == u.Mail && x.Password == u.Password);
 
-            if (guest != null)
+            if (user != null)
             {
                 return RedirectToAction("Index", "Home");
 
@@ -34,15 +34,15 @@ namespace MVC_E_ticaretWeb.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(Guest guest)
+        public IActionResult Register(User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Guests.Add(guest);
+                _context.Users.Add(user);
                 _context.SaveChanges();
                 return RedirectToAction("Login", "Account");
             }
-            return View(guest);
+            return View(user);
         }
     }
 }
