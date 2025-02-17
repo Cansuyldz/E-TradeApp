@@ -44,5 +44,13 @@ namespace MVC_E_ticaretWeb.Controllers
             }
             return View(user);
         }
+        public  IActionResult Cart()
+        {
+            return View();
+        }
+        public IActionResult Favorites()
+        {
+            return View();
+        }
     }
 }
