@@ -14,4 +14,47 @@ $(document).ready(function () {
             $("#userCard").hide();
         }
     });
+
+    $(document).on('click', '.js_add_to_product', function (e) {
+        var _t = $(this);
+        $.ajax({
+            'url': '/Cart/AddToCart',
+            'type': 'POST',
+            'data': {
+                productId: _t.data('productId')
+            },
+            'success': function (data) {
+                if (_t.data('refresh')) {
+                    location.reload();
+                } else {
+                    alert('Data: ' + data);
+                }
+            },
+            'error': function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    })
+
+    $(document).on('click', '.js_remove_product', function (e) {
+        var _t = $(this);
+        $.ajax({
+            'url': '/Cart/RemoveProduct',
+            'type': 'POST',
+            'data': {
+                productId: _t.data('productId')
+            },
+            'success': function (data) {
+                if (_t.data('refresh')) {
+                    location.reload();
+                } else {
+                    alert('Data: ' + data);
+                }
+            },
+            'error': function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    })
+
 });

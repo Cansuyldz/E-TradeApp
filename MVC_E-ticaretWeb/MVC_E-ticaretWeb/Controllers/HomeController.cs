@@ -1,18 +1,16 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
 using MVC_E_ticaretWeb.ViewModels;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        DataBaseContext _context = new();
+        [HttpGet]
         public IActionResult Index()
         {
             List<Product> products = _context.Products.ToList();
-         List<Category> categories= _context.Categories.ToList();
+            List<Category> categories = _context.Categories.ToList();
             ProductViewModel productViewModel = new ProductViewModel();
             productViewModel.Products = products;
             productViewModel.Categories = categories;
@@ -23,7 +21,5 @@ namespace MVC_E_ticaretWeb.Controllers
         {
             return View();
         }
-
-    
     }
 }

@@ -1,0 +1,56 @@
+﻿@model Cart
+@{
+}
+
+<h1>Sepetim</h1>
+@if (Model == null || Model.CartProducts.Count == 0)
+{
+    <h3>Sepetinizde ürün bulunmamaktadır.</h3>
+}
+else
+{
+    <div class="row">
+        <div class="col-8">
+            @foreach (var cartProduct in Model.CartProducts)
+            {
+                <div class="card position-relative mb-4 d-flex flex-row">
+                    <img src="@cartProduct.Product.Image" alt="" class="card-img-top" style="width:175px">
+
+                    <div class="card-body">
+                        <h5 class="card-title">@cartProduct.Product.Name</h5>
+                        <p class="card-text">@cartProduct.Product.Name</p>
+
+                        <div>
+                            <div>
+                                Base Price :@cartProduct.BasePrice
+                            </div>
+
+                            <div class="mb-4">
+                                Total Price :@cartProduct.TotalPrice
+                            </div>
+                        </div>
+
+                        <div class="product-actions">
+                            <button class="js_add_to_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">
+                                +
+                            </button>
+                            <input type="text" value="@cartProduct.Quantity">
+                            <button class="js_remove_to_product" data-product-id="@cartProduct.Product.Id">
+                                -
+                            </button>
+                        </div>
+
+                        <button class="js_remove_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">
+                            Remove Product
+                        </button>
+                    </div>
+
+                </div>
+
+            }
+        </div>
+        <div class="card col-4">
+            Buraya Sepet özet bilgileri gelecek
+        </div>
+    </div>
+}

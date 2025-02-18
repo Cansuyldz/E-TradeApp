@@ -1,17 +1,29 @@
-﻿@model Product
+﻿@{
+    string mail = @HttpContextAccessor.HttpContext.Session.GetString("mail");
+}
+@model Product
 <div class="card position-relative mb-4">
     <img src="@Model.Image" alt="" class="card-img-top" width="150px" height="150px">
 
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.Price</p>
-        <a href="#" class="btn btn-primary">Sepete ekle</a>
-
-     
+        @{
+            if (!string.IsNullOrEmpty(mail))
+            {
+                <button type="button" class="btn btn-primary js_add_to_product" data-product-id="@Model.Id">
+                    Sepete Ekle
+                </button>
+            }else
+            {
+                <a class="btn btn-primary" href="/account/login">
+                    Giriş Yap
+                </a>
+            }
+        }
+       
         <button class="btn btn-light position-absolute end-0 me-2">
             ❤️
         </button>
     </div>
 </div>
-
-    

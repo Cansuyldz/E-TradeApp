@@ -1,39 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_E_ticaretWeb.Models;
+using Newtonsoft.Json;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Text;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-        DataBaseContext _context = new();
         [HttpGet]
         public IActionResult Login()
         {
+            ViewBag.isHeaderShow = false;
             return View();
         }
+
         [HttpPost]
         public IActionResult Login(User u)
         {
-            var user = _context.Users
-                 .FirstOrDefault(x => x.Mail == u.Mail && x.Password == u.Password);
+            ViewBag.isHeaderShow = false;
+            User user = _context.Users.Where(x => x.Mail == u.Mail && x.Password == u.Password).FirstOrDefault();
 
             if (user != null)
             {
+                var usera = new GenericPrincipal(new ClaimsIdentity(user.Mail), null);
+                HttpContext.User = usera;
+
+                string userString = JsonConvert.SerializeObject(user);
+                byte[] userStringToByte = Encoding.UTF8.GetBytes(userString);
+                byte[] userMailByte = Encoding.UTF8.GetBytes(user.Mail);
+                HttpContext.Session.Set("user", userStringToByte);
+                HttpContext.Session.Set("mail", userMailByte);
+                
                 return RedirectToAction("Index", "Home");
 
             }
             else
             {
                 ViewBag.ErrorMessage = "Email veya şifre hatalı.";
-                return View();
+                return View(ViewBag);
             }
         }
-        [HttpGet]
+        [HttpGet("Register")]
         public IActionResult Register()
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("Register")]
         public IActionResult Register(User user)
         {
             if (ModelState.IsValid)
@@ -44,10 +58,15 @@ namespace MVC_E_ticaretWeb.Controllers
             }
             return View(user);
         }
-        public  IActionResult Cart()
+
+        [HttpGet("/Account/logout")]
+        public IActionResult Logout()
         {
-            return View();
+            HttpContext.Session.Clear();
+
+            return Redirect("/");
         }
+        
         public IActionResult Favorites()
         {
             return View();
