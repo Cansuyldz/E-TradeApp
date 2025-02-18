@@ -35,6 +35,26 @@ $(document).ready(function () {
             }
         });
     })
+    $(document).on('click', '.js_remove_from_cart', function (e) {
+        var _t = $(this);
+        $.ajax({
+            'url': '/Cart/RemoveFromProduct',
+            'type': 'POST',
+            'data': {
+                productId: _t.data('productId')
+            },
+            'success': function (data) {
+                if (_t.data('refresh')) {
+                    location.reload(); // Sayfayı yenile
+                } else {
+                    alert('Data: ' + data);
+                }
+            },
+            'error': function (request, error) {
+                alert("Request: " + JSON.stringify(request));
+            }
+        });
+    });
 
     $(document).on('click', '.js_remove_product', function (e) {
         var _t = $(this);

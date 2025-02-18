@@ -67,7 +67,7 @@ namespace MVC_E_ticaretWeb.Controllers
             return Redirect("/");
         }
         
-        public IActionResult Favorites()
+        public IActionResult Favorite()
         {
             return View();
         }

@@ -20,6 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }
+img {
+    display: block !important;
+    visibility: visible !important;
+}
+
 .user-card {
     display: none;
     width: 250px;

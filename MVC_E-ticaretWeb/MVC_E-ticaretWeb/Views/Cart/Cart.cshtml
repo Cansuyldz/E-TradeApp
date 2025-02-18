@@ -1,56 +1,72 @@
 ﻿@model Cart
 @{
+    Layout = "./_Layout";
 }
 
-<h1>Sepetim</h1>
-@if (Model == null || Model.CartProducts.Count == 0)
-{
-    <h3>Sepetinizde ürün bulunmamaktadır.</h3>
-}
-else
-{
-    <div class="row">
-        <div class="col-8">
-            @foreach (var cartProduct in Model.CartProducts)
-            {
-                <div class="card position-relative mb-4 d-flex flex-row">
-                    <img src="@cartProduct.Product.Image" alt="" class="card-img-top" style="width:175px">
-
-                    <div class="card-body">
-                        <h5 class="card-title">@cartProduct.Product.Name</h5>
-                        <p class="card-text">@cartProduct.Product.Name</p>
-
-                        <div>
-                            <div>
-                                Base Price :@cartProduct.BasePrice
-                            </div>
-
-                            <div class="mb-4">
-                                Total Price :@cartProduct.TotalPrice
+<div class="container mt-4">
+    @if (Model == null || Model.CartProducts.Count == 0)
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-cart2 me-2"></i>
+            <strong>Sepetiniz Boş - Alışverişe Başlayın</strong>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="~/Home/Index" class="btn btn-warning text-white fw-semibold px-4">Alışverişe Başla</a>
+        </div>
+    }
+    else
+    {
+        <h2 class="fw-bold mb-3">Sepetim (@Model.CartProducts.Count Ürün)</h2>
+        <div class="row">
+            <!-- Ürün Bilgisi -->
+            <div class="col-md-8">
+                @foreach (var cartProduct in Model.CartProducts)
+                {
+                    <div class="card p-3 mb-3 d-flex flex-row align-items-center position-relative">
+                        <img src="@cartProduct.Product.Image" alt="Ürün Resmi" class="me-3" style="width: 100px;">
+                        <div class="flex-grow-1">
+                            <strong class="text-dark">@cartProduct.Product.Name</strong>
+                            <p class="mb-1 text-muted">Tahmini Kargo: 2 gün içinde</p>
+                            <p class="mb-1 fw-bold text-danger">@cartProduct.TotalPrice TL</p>
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-secondary btn-sm js_remove_from_cart" data-refresh="true" data-product-id="@cartProduct.Product.Id">-</button>
+                                <input type="text" class="form-control text-center mx-2" value="@cartProduct.Quantity" style="width: 50px;">
+                                <button class="btn btn-outline-secondary btn-sm js_add_to_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">+</button>
                             </div>
                         </div>
-
-                        <div class="product-actions">
-                            <button class="js_add_to_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">
-                                +
-                            </button>
-                            <input type="text" value="@cartProduct.Quantity">
-                            <button class="js_remove_to_product" data-product-id="@cartProduct.Product.Id">
-                                -
-                            </button>
-                        </div>
-
-                        <button class="js_remove_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">
-                            Remove Product
+                        <button class="btn btn-link text-danger position-absolute top-0 end-0 m-2 js_remove_product" data-refresh="true" data-product-id="@cartProduct.Product.Id">
+                            <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
-
+                }
+            </div>
+            <!-- Sipariş Özeti -->
+            <div class="col-md-4">
+                <div class="card p-3">
+                    <h5 class="fw-bold">Sipariş Özeti</h5>
+                    <p class="d-flex justify-content-between">
+                        <span>Ürünün Toplamı</span>
+                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                    </p>
+                    <p class="d-flex justify-content-between">
+                        <span>Kargo Toplam</span>
+                        <span class="fw-bold">44,99 TL</span>
+                    </p>
+                    <p class="d-flex justify-content-between text-success">
+                        <span>250 TL ve Üzeri Kargo Bedava</span>
+                        <span>-44,99 TL</span>
+                    </p>
+                    <hr>
+                    <p class="d-flex justify-content-between">
+                        <span class="fw-bold">Toplam</span>
+                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                    </p>
+                    <button class="btn btn-warning w-100 mb-2 fw-bold">Sepeti Onayla</button>
+                    <button class="btn btn-outline-secondary w-100">Sepete Git</button>
                 </div>
+            </div>
+        </div>
+    }
+</div>
 
-            }
-        </div>
-        <div class="card col-4">
-            Buraya Sepet özet bilgileri gelecek
-        </div>
-    </div>
-}
+

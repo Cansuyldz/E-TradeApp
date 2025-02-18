@@ -36,11 +36,51 @@ namespace MVC_E_ticaretWeb.Controllers
             }
 
             CartProduct removeCartProduct = _context.Cart.Where(x => x.UserId == currentUser.Id)
-                .Include(x => x.CartProducts).SingleOrDefault()
+                .Include(x => x.CartProducts).FirstOrDefault()
                 .CartProducts.Where(x => x.ProductId == productId).FirstOrDefault();
             _context.CartProducts.Remove(removeCartProduct);
             _context.SaveChanges();
 
+            return true;
+        }
+        [HttpPost("/Cart/RemoveFromProduct")] 
+        public bool RemoveFromProduct(int productId)
+        {
+            User currentUser = GetUserBySession();
+            if (currentUser == null)
+            {
+                return false;
+            }
+
+            Cart cart = _context.Cart
+                .Where(x => x.UserId == currentUser.Id)
+                .Include(x => x.CartProducts)
+                .FirstOrDefault();
+
+            if (cart == null)
+            {
+                return false; // Kullanıcının sepeti yoksa işlem yapma
+            }
+
+            var cartProduct = cart.CartProducts?.FirstOrDefault(x => x.ProductId == productId);
+            if (cartProduct == null)
+            {
+                return false; // Sepette bu ürün yoksa işlem yapma
+            }
+
+            if (cartProduct.Quantity > 1)
+            {
+                // Eğer adet 1'den büyükse sadece 1 azalt
+                cartProduct.Quantity -= 1;
+                cartProduct.TotalPrice = cartProduct.BasePrice * cartProduct.Quantity;
+            }
+            else
+            {
+                // Eğer ürünün adedi 1 ise, ürünü tamamen kaldır
+                cart.CartProducts.Remove(cartProduct);
+            }
+
+            _context.SaveChanges();
             return true;
         }
 

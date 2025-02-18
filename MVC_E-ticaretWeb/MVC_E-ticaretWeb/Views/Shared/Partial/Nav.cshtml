@@ -6,8 +6,8 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a class="navbar-brand text-black" href="#">
-            <img src="images/logo/logo.png" alt="Logo" height="40">
+        <a class="navbar-brand text-black" href="~/Home/Index">
+            <img src="~/images/logo/logo.png" alt="Logo" height="40">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -61,7 +61,7 @@
                 </form>
 
                 <!-- Favori Butonu -->
-                <a href="~/Account/Favorites" class="btn btn-outline-secondary me-2" title="favoriler">
+                <a href="~/Favorite/Favorite" class="btn btn-outline-secondary me-2" title="favoriler">
                     <i class="bi bi-heart"></i>
                 </a>
 
@@ -83,16 +83,28 @@
                     <div class="card-body text-center">
                         @if (mail != null)
                         {
-                            <h5 class="card-title">Hoş Geldiniz</h5>
-                            <div>
-                                @mail
+
+                            <div class="text-center mb-2 font-bold">
+                                 @mail
                             </div>
-                            <a href="/Account/Logout" class="btn btn-primary w-100 mt-2">
-                                Çıkış Yap
+
+                            <div class="d-flex flex-column gap-2">
+                                <a href="/Orders" class="d-flex align-items-center text-decoration-none text-dark">
+                                    <i class="bi bi-box me-2"></i> Tüm Siparişlerim
+                                </a>
+                                <a href="/Profile" class="d-flex align-items-center text-decoration-none text-dark">
+                                    <i class="bi bi-person me-2"></i> Hesap Bilgilerim
+                                </a>
+                            </div>
+                            <hr class="my-2">
+
+                            <a href="Account/Logout" class="text-danger text-decoration-none d-block text-center fw-bold">
+                                <i class="bi bi-box-arrow-right"></i> Çıkış Yap
                             </a>
                         }
                         else
                         {
+                            <h5 class="card-title">Hoş Geldiniz</h5>
                             <p class="card-text">Lütfen giriş yapın veya üye olun.</p>
                             <a href="/Account/Login" class="btn btn-primary w-100 mb-2">Giriş Yap</a>
                             <a href="/Account/Register" class="btn btn-secondary w-100">Üye Ol</a>
