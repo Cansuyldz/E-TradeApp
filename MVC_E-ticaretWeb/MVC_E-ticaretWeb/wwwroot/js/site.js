@@ -76,5 +76,21 @@ $(document).ready(function () {
             }
         });
     })
+    function getSepetUrunSayisi() {
+        $.ajax({
+            url: '/Sepet/GetUrunSayisi', // Sepet ürün sayısını getiren bir API oluştur
+            type: 'GET',
+            success: function (data) {
+                if (data > 0) {
+                    $(".cart-badge").text(data).show();
+                } else {
+                    $(".cart-badge").hide();
+                }
+            }
+        });
+    }
 
+    $(document).ready(function () {
+        getSepetUrunSayisi();
+    });
 });

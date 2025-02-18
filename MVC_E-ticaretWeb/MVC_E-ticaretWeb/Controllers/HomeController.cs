@@ -14,6 +14,7 @@ namespace MVC_E_ticaretWeb.Controllers
             ProductViewModel productViewModel = new ProductViewModel();
             productViewModel.Products = products;
             productViewModel.Categories = categories;
+
             return View(productViewModel);
         }
 

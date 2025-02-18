@@ -24,7 +24,24 @@ img {
     display: block !important;
     visibility: visible !important;
 }
+.cart-container {
+    position: relative;
+    display: inline-block;
+}
 
+.cart-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 18px;
+}
 .user-card {
     display: none;
     width: 250px;
