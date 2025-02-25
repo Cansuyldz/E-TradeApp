@@ -16,7 +16,9 @@ namespace MVC_E_ticaretWeb.Controllers
             productViewModel.Categories = categories;
 
             return View(productViewModel);
+
         }
+
 
         public IActionResult Privacy()
         {
