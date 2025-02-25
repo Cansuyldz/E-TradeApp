@@ -137,6 +137,28 @@ namespace MVC_E_ticaretWeb.Controllers
 
 
             return true;
+
         }
+        [HttpGet("/Cart/GetCartItemCount")]
+        public JsonResult GetCartItemCount()
+        {
+            User currentUser = GetUserBySession();
+
+            if (currentUser == null)
+            {
+                return Json(0); // Kullanıcı giriş yapmamışsa 0 döndür
+            }
+
+            var cart = _context.Cart
+                .Where(x => x.UserId == currentUser.Id)
+                .Include(x => x.CartProducts)
+                .FirstOrDefault();
+
+            int itemCount = cart?.CartProducts?.Sum(x => x.Quantity) ?? 0;
+
+            return Json(itemCount);
+        }
+
+
     }
 }

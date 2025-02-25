@@ -8,23 +8,27 @@
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.Price</p>
-        @{
-            if (!string.IsNullOrEmpty(mail))
-            {
+        <div class="d-flex align-items-center">
+            @{
+                if (!string.IsNullOrEmpty(mail))
+                {
 
-                <button type="button" class="btn btn-primary js_add_to_product" data-product-id="@Model.Id">
-                    Sepete Ekle
-                </button>
-            }else
-            {
-                <a class="btn btn-primary" href="/account/login">
-                    Giriş Yap
-                </a>
+                    <button type="button" class="btn btn-primary js_add_to_product" data-product-id="@Model.Id">
+                        Sepete Ekle
+                    </button>
+                }
+                else
+                {
+                    <a class="btn btn-primary" href="/account/login">
+                        Giriş Yap
+                    </a>
+                }
             }
-        }
-       
-        <button class="btn btn-light position-absolute end-0 me-2">
-            ❤️
-        </button>
+
+            <button class="favorite-button border-0 bg-transparent ms-2" data-product-id="@Model.Id">
+                <i class="bi @(Model.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart") fs-4"></i>
+            </button>
+        </div>
+
     </div>
 </div>

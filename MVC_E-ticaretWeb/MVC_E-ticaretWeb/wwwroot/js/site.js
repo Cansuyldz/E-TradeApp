@@ -89,4 +89,83 @@ $(document).ready(function () {
     $(document).ready(function () {
         getSepetUrunSayisi();
     });
+    $(document).ready(function () {
+        updateCartItemCount(); 
+
+        $(document).on("click", ".add-to-cart-button", function () {
+            updateCartItemCount(); 
+        });
+
+        $(document).on("click", ".remove-from-cart-button", function () {
+            updateCartItemCount();
+        });
+    });
+
+    function updateCartItemCount() {
+        $.ajax({
+            url: "/Cart/GetCartItemCount",
+            type: "GET",
+            data: { _: new Date().getTime() }, 
+            success: function (response) {
+                $("#cart-item-count").text(response);
+            },
+            error: function () {
+                console.log("Sepet sayısı alınırken hata oluştu.");
+            }
+        });
+    }
+  
+
+    //Favorileme Kısmı
+    $(document).ready(function () {
+        $(".favorite-button").click(function () {
+            var button = $(this);
+            var icon = button.find("i");
+            var productId = button.data("product-id");
+
+            $.ajax({
+                url: "/Favorite/ToggleFavorite",
+                type: "POST",
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.isFavorited) {
+                        icon.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+                    } else {
+                        icon.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
+                    }
+                },
+                error: function () {
+                    alert("Bağlantı hatası!");
+                }
+            });
+        });
+    });
+
+
+
+    $(document).ready(function () {
+        $(".favorite-button").click(function () {
+            var button = $(this);
+            var productId = button.data("product-id");
+
+            $.ajax({
+                url: "/Favorite/AddToFavorites",  // URL'yi kontrol et
+                type: "POST",
+                data: { productId: productId },
+                success: function (response) {
+                    if (response.success) {
+                        alert("Ürün favorilere eklendi!");
+                    } else {
+                        alert(response.message); // Daha iyi hata mesajı
+                    }
+                },
+                error: function (xhr) {
+                    alert("Bağlantı hatası! " + xhr.responseText);
+                }
+            });
+        });
+    });
+
+
+
 });

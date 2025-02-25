@@ -1,5 +1,44 @@
-﻿@{
-    Layout = "_Layout";
+﻿@using MVC_E_ticaretWeb.ViewModels
+@model List<ProductViewModel>
+
+@{
+    Layout = "./_Layout";
 }
-<h1>Favorilerim </h1>
-<h1>Favorilenmiş ürün bulunmamaktadır!</h1>
+
+<div class="container mt-4">
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning d-flex align-items-center" role="alert">
+            <i class="bi bi-heart me-2"></i>
+            <strong>Favorilerinizde ürün bulunmamaktadır.</strong>
+        </div>
+        <div class="d-flex justify-content-center">
+            <a href="~/Home/Index" class="btn btn-primary text-white fw-semibold px-4">Ürünleri Keşfet</a>
+        </div>
+    }
+    else
+    {
+        <h2 class="fw-bold mb-3">Favorilerim (@Model.Count Ürün)</h2>
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-12 mb-3">
+                    <div class="d-flex align-items-center border p-3 rounded">
+                        <img src="~/@item.Image" alt="Ürün Resmi" class="me-3" style="width: 80px;">
+                        <div class="flex-grow-1">
+                            <strong class="text-dark">@item.Name</strong>
+                            <p class="fw-bold text-danger">@item.Price TL</p>
+                        </div>
+                        <button class="favorite-button border-0 bg-transparent" data-product-id="@item.Id">
+                            <i class="bi @(item.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart") fs-4"></i>
+                        </button>
+                        <form asp-action="RemoveFavorite" asp-controller="Favorite" method="post">
+                            <input type="hidden" name="favoriteId" value="@item.Id" />
+                            <button type="submit" class="btn btn-light border ms-2"><i class="bi bi-trash"></i></button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

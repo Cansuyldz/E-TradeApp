@@ -1,7 +1,6 @@
 ﻿@{
     string mail = @HttpContextAccessor.HttpContext.Session.GetString("mail");
-}
-@{
+ 
 }
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -65,10 +64,15 @@
                     <i class="bi bi-heart"></i>
                 </a>
 
+                <div class="cart-container">
+                     <a href="~/Cart" class="cart-icon btn btn-outline-secondary me-2" alt="Sepet" title="sepet">
+                        <span class="cart-count" id="cart-item-count">0</span>
+                        <i class="bi bi-cart"></i>
+                    </a>
+                </div>
                 <!-- Sepet Butonu -->
-                <a href="~/Cart" class="btn btn-outline-secondary me-2" title="sepet">
-                    <i class="bi bi-cart"></i>
-                </a>
+              
+               
 
                 <!-- Kullanıcı Butonu -->
                 <a href="#" class="btn btn-outline-secondary" title="hesap" id="userIcon">
@@ -85,7 +89,7 @@
                         {
 
                             <div class="text-center mb-2 font-bold">
-                                 @mail
+                                @mail
                             </div>
 
                             <div class="d-flex flex-column gap-2">

@@ -7,6 +7,7 @@
         public int Price { get; set; }
         public int Stock { get; set; }
         public string Image { get; set; }
+        public bool IsFavorite { get; set; }
 
         public ICollection<CartProduct> CartProducts { get; set; }
     }
