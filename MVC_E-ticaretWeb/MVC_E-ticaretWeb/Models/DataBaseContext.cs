@@ -14,6 +14,7 @@ namespace MVC_E_ticaretWeb.Models
         public DbSet<Cart> Cart { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

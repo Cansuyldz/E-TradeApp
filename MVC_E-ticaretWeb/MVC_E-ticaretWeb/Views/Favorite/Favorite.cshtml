@@ -22,23 +22,23 @@
         <div class="row">
             @foreach (var item in Model)
             {
-                <div class="col-md-12 mb-3">
+                <div class="col-md-12 mb-3 favorite-item" data-product-id="@item.Id">
                     <div class="d-flex align-items-center border p-3 rounded">
                         <img src="~/@item.Image" alt="Ürün Resmi" class="me-3" style="width: 80px;">
                         <div class="flex-grow-1">
                             <strong class="text-dark">@item.Name</strong>
                             <p class="fw-bold text-danger">@item.Price TL</p>
                         </div>
-                        <button class="favorite-button border-0 bg-transparent" data-product-id="@item.Id">
+                        <button class="favorite-button border-0 bg-transparent fav-btn" data-product-id="@item.Id">
                             <i class="bi @(item.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart") fs-4"></i>
                         </button>
-                        <form asp-action="RemoveFavorite" asp-controller="Favorite" method="post">
-                            <input type="hidden" name="favoriteId" value="@item.Id" />
-                            <button type="submit" class="btn btn-light border ms-2"><i class="bi bi-trash"></i></button>
-                        </form>
+                        <button class="remove-favorite-btn btn btn-light border ms-2" data-product-id="@item.Id">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </div>
                 </div>
             }
         </div>
     }
 </div>
+

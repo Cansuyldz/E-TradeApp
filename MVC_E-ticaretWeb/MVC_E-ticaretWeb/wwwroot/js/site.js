@@ -115,56 +115,71 @@ $(document).ready(function () {
         });
     }
   
-
-    //Favorileme Kısmı
+    // Favoriye ekleme/çıkarma
     $(document).ready(function () {
-        $(".favorite-button").click(function () {
+        $(".fav-btn").each(function () {
             var button = $(this);
-            var icon = button.find("i");
             var productId = button.data("product-id");
+            var icon = button.find("i");
+
+            $.ajax({
+                url: "/Favorite/CheckFavorite",
+                type: "GET",
+                data: { id: productId }, 
+                success: function (response) {
+                    if (response.isFavorite) {
+                        icon.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", ".fav-btn", function () {
+            var button = $(this);
+            var productId = button.data("product-id");
+            var icon = button.find("i");
 
             $.ajax({
                 url: "/Favorite/ToggleFavorite",
                 type: "POST",
-                data: { productId: productId },
+                data: { id: productId },  
                 success: function (response) {
-                    if (response.isFavorited) {
+                    if (response.isFavorite) {
                         icon.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
                     } else {
                         icon.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
                     }
                 },
                 error: function () {
-                    alert("Bağlantı hatası!");
+                    alert("Favorilere eklerken hata oluştu.");
                 }
             });
         });
-    });
 
-
-
-    $(document).ready(function () {
-        $(".favorite-button").click(function () {
+        $(document).on("click", ".remove-favorite-btn", function () {
             var button = $(this);
             var productId = button.data("product-id");
 
             $.ajax({
-                url: "/Favorite/AddToFavorites",  // URL'yi kontrol et
+                url: "/Favorite/RemoveFavorite",
                 type: "POST",
-                data: { productId: productId },
+                data: { id: productId },  
                 success: function (response) {
                     if (response.success) {
-                        alert("Ürün favorilere eklendi!");
+                        button.closest(".favorite-item").fadeOut(); 
                     } else {
-                        alert(response.message); // Daha iyi hata mesajı
+                        alert(response.message);
                     }
                 },
-                error: function (xhr) {
-                    alert("Bağlantı hatası! " + xhr.responseText);
+                error: function () {
+                    alert("Favorilerden kaldırırken hata oluştu.");
                 }
             });
         });
     });
+
+
+   
 
 
 

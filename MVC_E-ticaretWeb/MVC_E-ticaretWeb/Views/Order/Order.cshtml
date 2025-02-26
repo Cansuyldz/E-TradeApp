@@ -1,0 +1,44 @@
+﻿@model List<Order>
+
+@{
+    ViewBag.Title = "Siparişlerim";
+    Layout = "_Layout";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Siparişlerim</h2>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-warning text-center">
+            <p>Henüz siparişiniz bulunmamaktadır.</p>
+            <a href="/Home/Index" class="btn btn-primary">Alışverişe Başla</a>
+        </div>
+    }
+    else
+    {
+        foreach (var order in Model)
+        {
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <strong>Sipariş Tarihi:</strong> @order.Tarih.ToString("dd MMMM yyyy - HH:mm")
+                    </h5>
+                    <p class="card-text"><strong>Sipariş Özeti:</strong> @order.Ozet</p>
+                    <p class="card-text"><strong>Alıcı:</strong> @order.Alici</p>
+                    <p class="card-text"><strong>Tutar:</strong> <span class="text-success">@order.Tutar TL</span></p>
+                    
+                    <div class="d-flex align-items-center">
+                        <img src="@Url.Content(order.ResimUrl)" class="img-thumbnail me-3" style="width: 80px; height: auto;" />
+                        <div>
+                            <span class="badge bg-success">✔ @order.Durum</span>
+                            <p class="text-muted">Teslim tarihi: @order.TeslimTarihi.ToString("dd MMMM yyyy")</p>
+                        </div>
+                    </div>
+
+                    <a href="#" class="btn btn-outline-primary mt-2">Sipariş Detayı</a>
+                </div>
+            </div>
+        }
+    }
+</div>

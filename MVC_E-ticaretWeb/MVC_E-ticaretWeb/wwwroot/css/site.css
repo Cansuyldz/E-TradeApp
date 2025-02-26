@@ -53,3 +53,50 @@ img {
     padding: 10px;
     z-index: 1000;
 }
+.siparis-listesi {
+    margin-top: 20px;
+}
+
+.siparis-kutusu {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: #fff;
+}
+
+.siparis-ust {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.siparis-detay {
+    display: flex;
+    flex-direction: column;
+}
+
+.fiyat {
+    color: orange;
+    font-weight: bold;
+}
+
+.btn-orange {
+    background-color: #ff6600;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.siparis-alt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    background: #f1f1f
+}

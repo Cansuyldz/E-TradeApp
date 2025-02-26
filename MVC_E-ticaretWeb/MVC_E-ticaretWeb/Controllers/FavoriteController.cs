@@ -8,19 +8,16 @@ namespace MVC_E_ticaretWeb.Controllers
     public class FavoriteController : Controller
     {
         DataBaseContext _context = new();
+
         public IActionResult Favorite()
         {
             var userMail = HttpContext.Session.GetString("mail");
             if (string.IsNullOrEmpty(userMail))
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
             var user = _context.Users.FirstOrDefault(u => u.Mail == userMail);
             if (user == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
             var favoriteProducts = _context.Favorites
                 .Where(f => f.UserId == user.Id)
@@ -31,107 +28,126 @@ namespace MVC_E_ticaretWeb.Controllers
                     Name = f.Product.Name,
                     Image = f.Product.Image,
                     Price = f.Product.Price,
-                    IsFavorite = true // Zaten favorilerde olduğu için true gönderiyoruz
+                    IsFavorite = true
                 }).ToList();
+
+            Console.WriteLine($"Favorilerdeki ürün sayısı: {favoriteProducts.Count}");
 
             return View(favoriteProducts);
         }
 
-
-
-
-
-        // Favori ürünü kaldırma
-        [HttpPost]
-        public async Task<IActionResult> RemoveFavorite(int favoriteId)
-        {
-            var favorite = await _context.Favorites.FindAsync(favoriteId);
-            if (favorite != null)
-            {
-                _context.Favorites.Remove(favorite);
-                await _context.SaveChangesAsync();
-            }
-            return RedirectToAction("Index");
-        }
-
-        private int GetCurrentUserId()
-        {
-            // Kullanıcının ID'sini çek (Projene uygun şekilde düzenle)
-            return 1; // Örnek olarak ID 1 döndürüyor, kendi login sistemine göre değiştir.
-        }
-
-
-
-        [HttpPost]
-        public IActionResult AddToFavorites(int productId)
+        [HttpGet]
+        public IActionResult CheckFavorite(int id)
         {
             var userMail = HttpContext.Session.GetString("mail");
             if (string.IsNullOrEmpty(userMail))
-            {
-                return Json(new { success = false, message = "Oturum bulunamadı!" });
-            }
+                return Json(new { isFavorite = false });
 
             var user = _context.Users.FirstOrDefault(u => u.Mail == userMail);
             if (user == null)
-            {
-                return Json(new { success = false, message = "Kullanıcı bulunamadı!" });
-            }
+                return Json(new { isFavorite = false });
 
-            var product = _context.Products.FirstOrDefault(p => p.Id == productId);
-            if (product == null)
-            {
-                return Json(new { success = false, message = "Ürün bulunamadı!" });
-            }
-
-            // Daha önce eklenmiş mi kontrol edelim
-            var existingFavorite = _context.Favorites
-                .FirstOrDefault(f => f.UserId == user.Id && f.ProductId == productId);
-
-            if (existingFavorite != null)
-            {
-                return Json(new { success = false, message = "Bu ürün zaten favorilerde!" });
-            }
-
-            // Favorilere ekleyelim
-            var favorite = new Favorite
-            {
-                UserId = user.Id,
-                ProductId = productId
-            };
-
-            _context.Favorites.Add(favorite);
-            _context.SaveChanges();
-
-            Console.WriteLine($"Favorilere eklendi: Kullanıcı {user.Id}, Ürün {productId}"); // Log ekleme
-
-            return Json(new { success = true });
+            var isFavorite = _context.Favorites.Any(f => f.UserId == user.Id && f.ProductId == id);
+            return Json(new { isFavorite });
         }
 
+        public IActionResult RemoveFromFavorites(int id)
+        {
+            try
+            {
+                var mail = HttpContext.Session.GetString("mail");
+                if (string.IsNullOrEmpty(mail))
+                {
+                    return Json(new { success = false, message = "Oturum açık değil." });
+                }
+
+                var user = _context.Users.FirstOrDefault(u => u.Mail == mail);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Kullanıcı bulunamadı." });
+                }
+
+                var favorite = _context.Favorites.FirstOrDefault(f => f.UserId == user.Id && f.ProductId == id);
+                if (favorite == null)
+                {
+                    return Json(new { success = false, message = "Bu ürün zaten favorilerde değil." });
+                }
+
+                _context.Favorites.Remove(favorite);
+
+                try
+                {
+                    _context.SaveChanges();
+                    return Json(new { isFavorite = false, message = "Ürün favorilerden kaldırıldı." });
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return Json(new { success = false, message = "Favoriler güncellenirken bir hata oluştu, lütfen tekrar deneyin." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
+            }
+        }
 
         [HttpPost]
-        public IActionResult ToggleFavorite(int productId)
+        public IActionResult ToggleFavorite(int id)
         {
-            var userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null) return Json(new { success = false, message = "Lütfen giriş yapın." });
+            var userMail = HttpContext.Session.GetString("mail");
+            if (string.IsNullOrEmpty(userMail))
+                return Json(new { success = false, message = "Lütfen giriş yapın." });
 
-            var favorite = _context.Favorites.FirstOrDefault(f => f.UserId == userId && f.ProductId == productId);
+            var user = _context.Users.FirstOrDefault(u => u.Mail == userMail);
+            if (user == null)
+                return Json(new { success = false, message = "Kullanıcı bulunamadı!" });
+
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            if (product == null)
+                return Json(new { success = false, message = "Ürün bulunamadı!" });
+
+            var favorite = _context.Favorites.FirstOrDefault(f => f.UserId == user.Id && f.ProductId == id);
 
             if (favorite != null)
             {
-                // Favoriden kaldır
                 _context.Favorites.Remove(favorite);
                 _context.SaveChanges();
-                return Json(new { isFavorited = false });
+                return Json(new { isFavorite = false, message = "Ürün favorilerden kaldırıldı." });
             }
             else
             {
-                // Favoriye ekle
-                var newFavorite = new Favorite { UserId = userId.Value, ProductId = productId };
-                _context.Favorites.Add(newFavorite);
-                _context.SaveChanges();
-                return Json(new { isFavorited = true });
+                // **EKLEME ÖNCESİ TEKRAR KONTROLÜ**
+                var alreadyExists = _context.Favorites.Any(f => f.UserId == user.Id && f.ProductId == id);
+                if (!alreadyExists)
+                {
+                    var newFavorite = new Favorite
+                    {
+                        UserId = user.Id,
+                        ProductId = id
+                    };
+
+                    _context.Favorites.Add(newFavorite);
+                    _context.SaveChanges();
+
+                    // **EKLEME KONTROLÜ (Gerçekten kaydedilmiş mi?)**
+                    var checkFavorite = _context.Favorites.Any(f => f.UserId == user.Id && f.ProductId == id);
+                    if (checkFavorite)
+                    {
+                        return Json(new { isFavorite = true, message = "Ürün favorilere eklendi!" });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Favorilere ekleme başarısız!" });
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Ürün zaten favorilerde!" });
+                }
             }
         }
 
+
     }
 }
+

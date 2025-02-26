@@ -19,7 +19,7 @@ namespace MVC_E_ticaretWeb.Controllers
 
         }
 
-
+  
         public IActionResult Privacy()
         {
             return View();
