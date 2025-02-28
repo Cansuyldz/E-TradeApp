@@ -91,7 +91,6 @@ $(document).ready(function () {
     });
     $(document).ready(function () {
         updateCartItemCount(); 
-
         $(document).on("click", ".add-to-cart-button", function () {
             updateCartItemCount(); 
         });
@@ -114,8 +113,7 @@ $(document).ready(function () {
             }
         });
     }
-  
-    // Favoriye ekleme/çıkarma
+ 
     $(document).ready(function () {
         $(".fav-btn").each(function () {
             var button = $(this);
@@ -134,7 +132,8 @@ $(document).ready(function () {
             });
         });
 
-        $(document).on("click", ".fav-btn", function () {
+        $(document).ready("click", ".fav-btn", function () {
+            console.log('geldi');
             var button = $(this);
             var productId = button.data("product-id");
             var icon = button.find("i");
@@ -156,7 +155,7 @@ $(document).ready(function () {
             });
         });
 
-        $(document).on("click", ".remove-favorite-btn", function () {
+        $(document).ready("click", ".remove-favorite-btn", function () {
             var button = $(this);
             var productId = button.data("product-id");
 
@@ -177,10 +176,4 @@ $(document).ready(function () {
             });
         });
     });
-
-
-   
-
-
-
 });
