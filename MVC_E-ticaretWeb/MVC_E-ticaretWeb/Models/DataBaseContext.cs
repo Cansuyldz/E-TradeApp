@@ -21,15 +21,59 @@ namespace MVC_E_ticaretWeb.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CartProduct>()
-            .HasOne(cp => cp.Cart)
-            .WithMany(c => c.CartProducts)
-            .HasForeignKey(cp => cp.CartId);
+            //modelBuilder.Entity<CartProduct>()
+            //.HasOne(cp => cp.Cart)
+            //.WithMany(c => c.CartProducts)
+            //.HasForeignKey(cp => cp.CartId);
 
+            //modelBuilder.Entity<CartProduct>()
+            //    .HasOne(cp => cp.Product)
+            //    .WithMany(p => p.CartProducts)
+            //    .HasForeignKey(cp => cp.ProductId);
+
+
+            // Product - Category (One-to-Many)
+            modelBuilder.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CartProduct - Product (Many-to-One)
             modelBuilder.Entity<CartProduct>()
                 .HasOne(cp => cp.Product)
                 .WithMany(p => p.CartProducts)
-                .HasForeignKey(cp => cp.ProductId);
+                .HasForeignKey(cp => cp.ProductId)
+                .OnDelete(DeleteBehavior.Restrict); // Sepette ürün varken, ürün silinemez.
+
+            // CartProduct - Cart (Many-to-One)
+            modelBuilder.Entity<CartProduct>()
+                .HasOne(cp => cp.Cart)
+                .WithMany(c => c.CartProducts)
+                .HasForeignKey(cp => cp.CartId)
+                .OnDelete(DeleteBehavior.Cascade); // Sepet silinirse, CartProducts da silinir.
+
+            // Product İçin Ek Ayarlar
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Price)
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .Property(p => p.Stock)
+                .IsRequired();
+
+            // Category İçin Ek Ayarlar
+            modelBuilder.Entity<Category>()
+                .Property(c => c.Name)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            // NotMapped olan IsFavorite’i Fluent API'de belirtmeye gerek yok.
         }
 
         private void DataSeeder()

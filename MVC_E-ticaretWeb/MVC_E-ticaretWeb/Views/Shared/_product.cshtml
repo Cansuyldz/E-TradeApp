@@ -16,6 +16,10 @@
                     <button type="button" class="btn btn-primary js_add_to_product" data-product-id="@Model.Id">
                         Sepete Ekle
                     </button>
+
+                    <button class="favorite-button border-0 bg-transparent fav-btn js_add_or_remove_fav" data-is-added="@Model.IsFavorite" data-product-id="@Model.Id">
+                        <i class="bi @(Model.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart") fs-4"></i>
+                    </button>
                 }
                 else
                 {
@@ -25,35 +29,8 @@
                 }
             }
 
-            <button class="favorite-button border-0 bg-transparent fav-btn" data-product-id="@Model.Id">
-                <i class="bi @(Model.IsFavorite ? "bi-heart-fill text-danger" : "bi-heart") fs-4"></i>
-            </button>
-
 
         </div>
 
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".fav-btn").click(function () {
-            var button = $(this);
-            var productId = button.data("product-id");
-            var icon = button.find("i");
-
-            $.ajax({
-                url: "/Favorite/ToggleFavorite",
-                type: "POST",
-                data: { id: productId },
-                success: function (response) {
-                    if (response.isFavorite) {
-                        icon.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
-                    } else {
-                        icon.removeClass("bi-heart-fill text-danger").addClass("bi-heart");
-                    }
-                }
-            });
-        });
-    });
-</script>

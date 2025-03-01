@@ -86,7 +86,8 @@ namespace MVC_E_ticaretWeb.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -162,16 +163,17 @@ namespace MVC_E_ticaretWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsFavorite")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("Price")
                         .HasColumnType("int");
@@ -180,6 +182,8 @@ namespace MVC_E_ticaretWeb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -235,7 +239,7 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.HasOne("MVC_E_ticaretWeb.Models.Product", "Product")
                         .WithMany("CartProducts")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cart");
@@ -262,9 +266,25 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Product", b =>
+                {
+                    b.HasOne("MVC_E_ticaretWeb.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Cart", b =>
                 {
                     b.Navigation("CartProducts");
+                });
+
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Product", b =>

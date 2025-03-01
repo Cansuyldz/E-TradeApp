@@ -1,4 +1,6 @@
-﻿namespace MVC_E_ticaretWeb
+﻿using MVC_E_ticaretWeb.Utils;
+
+namespace MVC_E_ticaretWeb
 {
     public class Program
     {
@@ -6,8 +8,11 @@
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AppSessionFilter>();
+            }).AddRazorRuntimeCompilation();
+
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddSession();
 

@@ -5,11 +5,14 @@ using Newtonsoft.Json;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
-    //[Route("[controller]")]
+    [Route("/base")]
+    //[AppSessionFilter]
     public class BaseController : Controller
     {
         public DataBaseContext _context = new();
-        public User GetUserBySession()
+
+
+        protected User GetUserBySession()
         {
             User currentUser = null;
             if (HttpContext.Session.GetString("user") != null)
@@ -20,12 +23,19 @@ namespace MVC_E_ticaretWeb.Controllers
             return currentUser;
         }
 
-        public Cart GetCurrentUserCart()
+        protected Cart GetCurrentUserCart()
         {
             User currentUser = GetUserBySession();
             if (currentUser == null) return null;
             return _context.Cart.Where(x => x.UserId == currentUser.Id).Include(x => x.CartProducts)
                 .ThenInclude(x => x.Product).FirstOrDefault();
+        }
+
+        protected int CartItemsCount()
+        {
+            User currentUser = GetUserBySession();
+            if (currentUser == null) return 0;
+            return _context.Cart.Where(x => x.UserId == currentUser.Id).Include(x => x.CartProducts).Count();
         }
     }
 }

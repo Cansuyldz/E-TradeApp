@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
+using MVC_E_ticaretWeb.ViewModels;
 using Newtonsoft.Json;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -7,16 +9,18 @@ using System.Text;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
+    [Route("/account")]
     public class AccountController : BaseController
     {
-        [HttpGet]
+
+        [HttpGet("login")]
         public IActionResult Login()
         {
             ViewBag.isHeaderShow = false;
             return View();
         }
 
-        [HttpPost]
+        [HttpPost("login")]
         public IActionResult Login(User u)
         {
             ViewBag.isHeaderShow = false;
@@ -59,14 +63,12 @@ namespace MVC_E_ticaretWeb.Controllers
             return View(user);
         }
 
-        [HttpGet("/Account/logout")]
+        [HttpGet("/logout")]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
 
             return Redirect("/");
         }
-        
-   
     }
 }

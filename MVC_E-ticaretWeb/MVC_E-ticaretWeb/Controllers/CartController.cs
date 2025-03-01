@@ -4,6 +4,7 @@ using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
+    [Route("/cart")]
     public class CartController : BaseController
     {
         DataBaseContext _context = new();
