@@ -106,3 +106,45 @@ img {
     top: 0;
     right: 0;
 }
+.swiper-container {
+    max-width: 100%; /* Slider geni?li?i */
+}
+
+.swiper-slide img {
+    width: 100%; /* Resimleri tam geni?likte göster */
+    height: auto;
+}
+.swiper-button-next,
+.swiper-button-prev {
+    color: white; /* Oklar?n rengini beyaz yap */
+  /* Hafif siyah arka plan */
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* Yuvarlak butonlar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+   
+
+.swiper-button-next {
+    right: 10px; /* Sa?da konumland?r */
+}
+
+.swiper-button-prev {
+    left: 10px; /* Solda konumland?r */
+}
+
+.swiper-container {
+    position: relative; /* Oklar? düzgün konumland?rmak için */
+}
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 20px; 
+}
+
+.mb-30{
+    margin-bottom:30px;
+}

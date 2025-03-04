@@ -160,6 +160,5 @@ namespace MVC_E_ticaretWeb.Controllers
             return Json(itemCount);
         }
 
-
     }
 }

@@ -11,7 +11,7 @@
             <strong>Sepetiniz Boş - Alışverişe Başlayın</strong>
         </div>
         <div class="d-flex justify-content-center">
-            <a href="~/Home/Index" class="btn btn-warning text-white fw-semibold px-4">Alışverişe Başla</a>
+            <a href="~/" class="btn btn-warning text-white fw-semibold px-4">Alışverişe Başla</a>
         </div>
     }
     else
@@ -59,7 +59,9 @@
                         <span class="fw-bold">Toplam</span>
                         <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
-                    <button class="btn btn-warning w-100 mb-2 fw-bold">Sepeti Onayla</button>
+                    <a class="btn btn-warning w-100 mb-2 fw-bold" href="~/cart/CheckOut">
+                        Sepeti Onayla
+                    </a>
                 </div>
             </div>
         </div>
