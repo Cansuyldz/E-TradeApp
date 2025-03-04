@@ -4,9 +4,8 @@ using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
-    public class CheckOutController : BaseController
+    public class CheckOutController : Controller
     {
-       
         public IActionResult CheckOut()
         {
             return View();
