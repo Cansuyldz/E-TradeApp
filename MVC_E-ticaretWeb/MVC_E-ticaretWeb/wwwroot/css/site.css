@@ -125,9 +125,14 @@ img {
     align-items: center;
     justify-content: center;
 }
-
-   
-
+.p-adress, p-payment {
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    border-bottom: 4px solid #e2e2e2;
+    padding: 18px 20px;
+    position: relative;
+}
 .swiper-button-next {
     right: 10px; /* Sa?da konumland?r */
 }
@@ -144,7 +149,9 @@ img {
 .swiper-button-prev::after {
     font-size: 20px; 
 }
-
+.mt-30{
+    margin-top:30px;
+}
 .mb-30{
     margin-bottom:30px;
 }

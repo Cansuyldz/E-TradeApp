@@ -7,6 +7,11 @@ namespace MVC_E_ticaretWeb.Controllers
     [Route("/profile")]
     public class ProfileController : BaseController
     {
+        [HttpGet("/profile/Profile")]
+        public IActionResult Profile()
+        {
+            return View();
+        }
         [HttpGet("/profile/favorilerim")]
         public IActionResult Favorite()
         {

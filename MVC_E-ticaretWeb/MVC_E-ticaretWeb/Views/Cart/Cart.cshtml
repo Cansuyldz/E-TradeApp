@@ -40,6 +40,7 @@
                 }
             </div>
             <div class="col-md-4">
+                <form asp-controller="Checkout" asp-action="Checkout" method="post">
                 <div class="card p-3">
                     <h5 class="fw-bold">Sipariş Özeti</h5>
                     <p class="d-flex justify-content-between">
@@ -59,10 +60,11 @@
                         <span class="fw-bold">Toplam</span>
                         <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
-                    <a class="btn btn-warning w-100 mb-2 fw-bold" href="/CheckOut">
+                    <a class="btn btn-warning w-100 mb-2 fw-bold" href="~/checkout/delivery">
                         Sepeti Onayla
                     </a>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     }

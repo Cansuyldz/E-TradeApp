@@ -4,9 +4,16 @@ using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
+    [Route("/checkout")]
     public class CheckOutController : Controller
     {
-        public IActionResult CheckOut()
+        [HttpGet("/checkout/delivery")]
+        public IActionResult Delivery()
+        {
+            return View();
+        }
+        [HttpGet("/checkout/payment")]
+        public IActionResult Payment()
         {
             return View();
         }

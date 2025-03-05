@@ -162,20 +162,6 @@ namespace MVC_E_ticaretWeb.Controllers
 
 
 
-        [HttpGet("/CheckOut")]
-        public IActionResult CheckOut()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult CheckOutPost()
-        {
-            return View();
-        }
-
-
-
 
 
     }
