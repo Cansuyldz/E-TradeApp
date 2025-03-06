@@ -106,10 +106,40 @@ img {
     top: 0;
     right: 0;
 }
+
 .swiper-container {
     max-width: 100%; /* Slider geni?li?i */
 }
+.js-add-address{
+    border: 1px solid rgba(0,0,0,.125);
+    background: none;
+    border-radius: 4px;
+    width: 200px;
+    height: 35px;
+    margin-bottom:5px
+}
+.add-address-form{
+    display:none;
+}
+.add-address-form.active {
+    display: block;
+    margin-top:5px;
+}
+.adres{
+    display:flex;
+    justify-content:space-between;
+}
+.adres-title{
+    font-size:20px;
+    font-weight:bold;
 
+}
+.js-close-address-form button {
+    border: none;
+    background: none;
+    font-size: 20px;
+    font-weight: bold;
+}
 .swiper-slide img {
     width: 100%; /* Resimleri tam geni?likte göster */
     height: auto;
@@ -125,14 +155,7 @@ img {
     align-items: center;
     justify-content: center;
 }
-.p-adress, p-payment {
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
-    border-bottom: 4px solid #e2e2e2;
-    padding: 18px 20px;
-    position: relative;
-}
+
 .swiper-button-next {
     right: 10px; /* Sa?da konumland?r */
 }

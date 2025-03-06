@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
+using Newtonsoft.Json;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
@@ -160,7 +161,13 @@ namespace MVC_E_ticaretWeb.Controllers
             return Json(itemCount);
         }
 
+        public IActionResult Delivery()
+        {
+            var cartJson = HttpContext.Session.GetString("CartProducts");
+            var cartProducts = cartJson != null ? JsonConvert.DeserializeObject<List<CartProduct>>(cartJson) : new List<CartProduct>();
 
+            return View(cartProducts);
+        }
 
 
 
