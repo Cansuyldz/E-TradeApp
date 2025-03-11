@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVC_E_ticaretWeb.Models;
+using MVC_E_ticaretWeb.ViewModels;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
@@ -11,31 +12,69 @@ namespace MVC_E_ticaretWeb.Controllers
         public IActionResult Delivery()
         {
 
-            Cart cart = new();
+          User user = GetUserBySession();
+    if (user == null)
+    {
+        return Redirect("/account/login");
+    }
+
+    Cart cart = GetCurrentUserCart();
+    List<Adress> adresses = _context.Adresses
+                                    .Where(a => a.UserId == user.Id)
+                                    .ToList();
+
+    CartAddressViewModel viewModel = new CartAddressViewModel
+    {
+        Cart = cart, // Burada liste değil, tek nesne olarak atıyoruz
+        Adresses = adresses
+    };
+
+    return View(viewModel);
+        }
+        [HttpGet("Addressregistration")]
+        public IActionResult Addressregistration()
+        {
+            return View();
+        }
+        [HttpPost("Addressregistration")]
+        public IActionResult Addressregistration(Adress adress)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Adresses.Add(adress);
+                _context.SaveChanges();
+                return View();
+            }
+            return View(adress);
+        }
+        
+
+        [HttpPost("/checkout/payment")]
+        public IActionResult Payment()
+        {
             User user = GetUserBySession();
             if (user == null)
             {
-                //return Redirect("/account/login");
+                return RedirectToAction("Delivery");
             }
-            else
-            {
-                cart = GetCurrentUserCart();
-                return View(cart);
-            }
-            return View();
-        }
 
-
-        [HttpGet("/checkout/payment")]
-        public IActionResult Payment()
-        {
             Cart cart = GetCurrentUserCart();
-            //if(cart.Address == null)
-            //{
-            //    return RedirectToAction("delivery");
-            //}
+            List<Adress> adresses = _context.Adresses
+                                            .Where(a => a.UserId == user.Id)
+                                            .ToList();
 
-            return View();
+            if (adresses == null || !adresses.Any())
+            {
+                return RedirectToAction("Delivery");
+            }
+
+            CartAddressViewModel viewModel = new CartAddressViewModel
+            {
+                Cart = cart,
+                Adresses = adresses
+            };
+
+            return View(viewModel);
         }
     }
 }

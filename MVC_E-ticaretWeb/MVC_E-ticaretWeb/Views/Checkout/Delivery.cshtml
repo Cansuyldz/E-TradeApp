@@ -1,8 +1,10 @@
-﻿@model Cart
+﻿@using MVC_E_ticaretWeb.ViewModels
+@model CartAddressViewModel
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Ödeme";
 }
+
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
@@ -16,47 +18,69 @@
                 </div>
 
 
-                <form>
+                <form asp-action="Addressregistration" asp-controller="Checkout" method="post">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="isim" class="form-label">İsim</label>
-                            <input type="text" class="form-control" id="isim" placeholder="İsminizi girin">
+                            <input type="text" class="form-control" name="Name" id="isim" placeholder="İsminizi girin">
                         </div>
                         <div class="col-md-6">
                             <label for="soyisim" class="form-label">Soyisim</label>
-                            <input type="text" class="form-control" id="soyisim" placeholder="Soyisminizi girin">
+                            <input type="text" class="form-control" name="Surname" id="soyisim" placeholder="Soyisminizi girin">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="telefon" class="form-label">Telefon</label>
-                            <input type="tel" class="form-control" id="telefon" placeholder="Telefon numaranızı girin">
+                            <input type="tel" class="form-control" name="Phone" id="telefon" placeholder="Telefon numaranızı girin">
                         </div>
                         <div class="col-md-6">
                             <label for="il" class="form-label">İl</label>
-                            <input type="text" class="form-control" id="il" placeholder="İlinizi girin">
+                            <input type="text" class="form-control" name="Province" id="il" placeholder="İlinizi girin">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="ilce" class="form-label">İlçe</label>
-                            <input type="text" class="form-control" id="ilce" placeholder="İlçenizi girin">
+                            <input type="text" class="form-control" name="District" id="ilce" placeholder="İlçenizi girin">
                         </div>
                         <div class="col-md-6">
                             <label for="mahalle" class="form-label">Mahalle</label>
-                            <input type="text" class="form-control" id="mahalle" placeholder="Mahallenizi girin">
+                            <input type="text" class="form-control" name="Neighbourhood" id="mahalle" placeholder="Mahallenizi girin">
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="adres" class="form-label">Adres</label>
-                        <textarea class="form-control" id="adres" rows="3" placeholder="Açık adresinizi girin"></textarea>
+                        <textarea class="form-control" id="adres" name="Streetaddress" rows="3" placeholder="Açık adresinizi girin"></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="adresBasligi" class="form-label">Adres Başlığı</label>
-                        <input type="text" class="form-control" id="adresBasligi" placeholder="Ev, İş, Yazlık vb.">
+                        <input type="text" class="form-control" name="AddressLine" id="adresBasligi" placeholder="Ev, İş, Yazlık vb.">
                     </div>
                     <button type="submit" class="btn btn-primary">Kaydet</button>
                 </form>
+            </div>
+            <h3>Adres Bilgileri</h3>
+            <div class="row">
+                @foreach (var address in Model.Adresses)
+                {
+                    <div class="col-lg-6 col-md-12 mb-3">
+                        <!-- Büyük ekranda 2 sütun, mobilde 1 sütun -->
+                        <div class="card p-3 border">
+                            <div class="d-flex align-items-center">
+                                <input type="radio" name="adres" class="me-2">
+                                <h5 class="mb-0">@address.AddressLine</h5>
+                                <a href="#" class="ms-auto">Düzenle</a>
+                            </div>
+                            <hr>
+                            <div>
+                                <p class="fw-bold mb-1">@address.Name @address.Surname</p>
+                                <p class="mb-1"><i class="bi bi-telephone"></i> @address.Phone</p>
+                                <p class="mb-0">@address.Streetaddress<br>@address.Province / @address.District</p>
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-md-4">
@@ -65,7 +89,7 @@
                     <h5 class="fw-bold">Sipariş Özeti</h5>
                     <p class="d-flex justify-content-between">
                         <span>Ürünün Toplamı</span>
-                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                        <span class="fw-bold" @Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
                     <p class="d-flex justify-content-between">
                         <span>Kargo Toplam</span>
@@ -78,11 +102,9 @@
                     <hr>
                     <p class="d-flex justify-content-between">
                         <span class="fw-bold">Toplam</span>
-                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                        <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
-                    <a class="btn btn-warning w-100 mb-2 fw-bold" href="~/checkout/payment">
-                        Kaydet ve Devam Et
-                    </a>
+                    <button class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton">Kaydet ve Devam Et</button>
                 </div>
             </form>
         </div>

@@ -16,5 +16,7 @@ namespace MVC_E_ticaretWeb.Models
 
         [ForeignKey("UserId")]
         public User User { get; set; }
+        public IEnumerable<Adress> Adresses { get; set; }
+
     }
 }

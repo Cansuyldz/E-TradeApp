@@ -18,7 +18,14 @@ $(document).ready(function () {
     $('.js-add-address').click(function () {
         $('.add-address-form').toggleClass('active');
     });
-
+    $("#kaydetButton").click(function (e) {
+        if ($("input[name=adres]:checked").length === 0) {
+            e.preventDefault(); 
+        } else {
+            window.location.replace("/checkout/payment"); 
+            console.log("Yönlendirme çalıştı mı?");
+        }
+    });
     $(document).on('click', '.js_add_to_product', function (e) {
         var _t = $(this);
         $.ajax({
@@ -122,3 +129,7 @@ var swiper = new Swiper(".mySwiper", {
         clickable: true,
     },
 });
+function toggleCardForm() {
+    document.getElementById('cardList').classList.toggle('hidden');
+    document.getElementById('newCardForm').classList.toggle('hidden');
+}

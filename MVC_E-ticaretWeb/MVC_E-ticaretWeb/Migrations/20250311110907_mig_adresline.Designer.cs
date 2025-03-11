@@ -4,6 +4,7 @@ using MVC_E_ticaretWeb.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVC_E_ticaretWeb.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    partial class DataBaseContextModelSnapshot : ModelSnapshot
+    [Migration("20250311110907_mig_adresline")]
+    partial class mig_adresline
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.Property<string>("AddressLine")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
 
                     b.Property<string>("District")
                         .IsRequired()
@@ -69,8 +69,6 @@ namespace MVC_E_ticaretWeb.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("UserId");
 
@@ -274,17 +272,11 @@ namespace MVC_E_ticaretWeb.Migrations
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Adress", b =>
                 {
-                    b.HasOne("MVC_E_ticaretWeb.Models.Cart", "Cart")
-                        .WithMany("Adresses")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("MVC_E_ticaretWeb.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
@@ -351,8 +343,6 @@ namespace MVC_E_ticaretWeb.Migrations
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Cart", b =>
                 {
-                    b.Navigation("Adresses");
-
                     b.Navigation("CartProducts");
                 });
 
