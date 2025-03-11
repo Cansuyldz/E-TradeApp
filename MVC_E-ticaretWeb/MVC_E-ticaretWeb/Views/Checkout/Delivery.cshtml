@@ -6,13 +6,13 @@
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8">
-            <button class="js-add-address">
+            <button class="add-address-btn js-add-address">
                 Yeni Adres Ekle
             </button>
             <div class="card p-4 add-address-form">
                 <div class="adres">
                     <div class="adres-title mb-3">Adres Kayıt Formu</div>
-                    <div class="js-close-address-form"><button>X</button></div>
+                    <button class="btn btn-danger js-add-address">X</button>
                 </div>
 
 
@@ -61,11 +61,11 @@
         </div>
         <div class="col-md-4">
             <form asp-controller="Checkout" asp-action="Payment" method="post">
-                <div class="card p-3">
+                <div class="card p-3 delivery-summary">
                     <h5 class="fw-bold">Sipariş Özeti</h5>
                     <p class="d-flex justify-content-between">
                         <span>Ürünün Toplamı</span>
-                        <span class="fw-bold">TL</span>
+                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
                     <p class="d-flex justify-content-between">
                         <span>Kargo Toplam</span>
@@ -78,7 +78,7 @@
                     <hr>
                     <p class="d-flex justify-content-between">
                         <span class="fw-bold">Toplam</span>
-                        <span class="fw-bold"> TL</span>
+                        <span class="fw-bold">@Model.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
                     <a class="btn btn-warning w-100 mb-2 fw-bold" href="~/checkout/payment">
                         Kaydet ve Devam Et

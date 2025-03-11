@@ -1,26 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
-using MVC_E_ticaretWeb.ViewModels;
 
 namespace MVC_E_ticaretWeb.Controllers
 {
     [Route("/checkout")]
-    public class CheckOutController : Controller
+    public class CheckOutController : BaseController
     {
 
         [HttpGet("/checkout/delivery")]
         public IActionResult Delivery()
         {
 
+            Cart cart = new();
+            User user = GetUserBySession();
+            if (user == null)
+            {
+                //return Redirect("/account/login");
+            }
+            else
+            {
+                cart = GetCurrentUserCart();
+                return View(cart);
+            }
             return View();
-
         }
 
 
         [HttpGet("/checkout/payment")]
         public IActionResult Payment()
         {
+            Cart cart = GetCurrentUserCart();
+            //if(cart.Address == null)
+            //{
+            //    return RedirectToAction("delivery");
+            //}
+
             return View();
         }
     }

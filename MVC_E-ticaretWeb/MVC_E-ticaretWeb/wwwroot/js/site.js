@@ -15,17 +15,9 @@ $(document).ready(function () {
         }
     });
 
-
-
-    $(document).ready(function () {
-        $('.js-add-address').click(function () {
-            $('.add-address-form').toggleClass('active');
-        });
+    $('.js-add-address').click(function () {
+        $('.add-address-form').toggleClass('active');
     });
-    $('.js-close-address-form').click(function () {
-        $('.add-address-form').removeClass('active');
-    });
-
 
     $(document).on('click', '.js_add_to_product', function (e) {
         var _t = $(this);
