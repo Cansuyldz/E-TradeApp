@@ -18,9 +18,13 @@
                 </div>
 
 
-                <form asp-action="Addressregistration" asp-controller="Checkout" method="post">
+                <form id="add-address-form">
                     <div class="row mb-3">
+                        <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+
                         <div class="col-md-6">
+                          
+
                             <label for="isim" class="form-label">İsim</label>
                             <input type="text" class="form-control" name="Name" id="isim" placeholder="İsminizi girin">
                         </div>
@@ -57,7 +61,7 @@
                         <label for="adresBasligi" class="form-label">Adres Başlığı</label>
                         <input type="text" class="form-control" name="AddressLine" id="adresBasligi" placeholder="Ev, İş, Yazlık vb.">
                     </div>
-                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                    <button type="button" class="btn btn-primary js-add-save-address">Kaydet</button>
                 </form>
             </div>
             <h3>Adres Bilgileri</h3>
@@ -65,10 +69,11 @@
                 @foreach (var address in Model.Adresses)
                 {
                     <div class="col-lg-6 col-md-12 mb-3">
-                        <!-- Büyük ekranda 2 sütun, mobilde 1 sütun -->
                         <div class="card p-3 border">
                             <div class="d-flex align-items-center">
                                 <input type="radio" name="adres" class="me-2">
+                                <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+
                                 <h5 class="mb-0">@address.AddressLine</h5>
                                 <a href="#" class="ms-auto">Düzenle</a>
                             </div>

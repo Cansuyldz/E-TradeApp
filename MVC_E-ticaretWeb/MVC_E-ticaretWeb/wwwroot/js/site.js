@@ -115,6 +115,45 @@ $(document).ready(function () {
             }
         });
     })
+    $(document).on("click", ".js-add-save-address", function () {
+        var _t = $(this);
+        var form = _t.closest("form");
+        var name = form.find("input[name='Name']").val();
+        var surname = form.find("input[name='Surname']").val();
+        var phone = form.find("input[name='Phone']").val();
+        var province = form.find("input[name='Province']").val();
+        var district = form.find("input[name='District']").val();
+        var neighbourhood = form.find("input[name='Neighbourhood']").val();
+        var streetaddress = form.find("input[name='Streetaddress']").val();
+        var addressLine = form.find("input[name='AddressLine']").val();
+
+        var params = {
+            Name: name,
+            Surname: surname,
+            Phone: phone,
+            Province: province,
+            District: district,
+            Neighbourhood: neighbourhood,
+            Streetaddress: streetaddress,
+            AddressLine: addressLine
+        };
+
+        $.ajax({
+            url: "/checkout/Newaddress",
+            type: "POST",
+            data: params,
+            success: function (res) {
+                if (res.success) {
+                    location.reload();
+                } else {
+                    console.log("Adres eklenirken hata oluştu: " + res.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log("Hata:", error);
+            }
+        });
+    });
 });
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,
