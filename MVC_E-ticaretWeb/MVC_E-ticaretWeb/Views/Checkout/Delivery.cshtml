@@ -94,7 +94,7 @@
                     <h5 class="fw-bold">Sipariş Özeti</h5>
                     <p class="d-flex justify-content-between">
                         <span>Ürünün Toplamı</span>
-                        <span class="fw-bold" @Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                        <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
                     <p class="d-flex justify-content-between">
                         <span>Kargo Toplam</span>
