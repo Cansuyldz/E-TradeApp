@@ -118,14 +118,25 @@ $(document).ready(function () {
     $(document).on("click", ".js-add-save-address", function () {
         var _t = $(this);
         var form = _t.closest("form");
-        var name = form.find("input[name='Name']").val();
-        var surname = form.find("input[name='Surname']").val();
-        var phone = form.find("input[name='Phone']").val();
-        var province = form.find("input[name='Province']").val();
-        var district = form.find("input[name='District']").val();
-        var neighbourhood = form.find("input[name='Neighbourhood']").val();
-        var streetaddress = form.find("input[name='Streetaddress']").val();
-        var addressLine = form.find("input[name='AddressLine']").val();
+
+        if (!form.length) {
+            console.error("Form bulunamadı!");
+            return;
+        }
+
+        var name = form.find("input[name='Name']").val().trim();
+        var surname = form.find("input[name='Surname']").val().trim();
+        var phone = form.find("input[name='Phone']").val().trim();
+        var province = form.find("input[name='Province']").val().trim();
+        var district = form.find("input[name='District']").val().trim();
+        var neighbourhood = form.find("input[name='Neighbourhood']").val().trim();
+        var streetaddress = form.find("input[name='Streetaddress']").val().trim();
+        var addressLine = form.find("input[name='AddressLine']").val().trim();
+
+        if (!name || !surname || !phone || !province || !district || !neighbourhood || !streetaddress || !addressLine) {
+            console.warn("Lütfen tüm alanları doldurunuz!");
+            return;
+        }
 
         var params = {
             Name: name,
@@ -143,17 +154,18 @@ $(document).ready(function () {
             type: "POST",
             data: params,
             success: function (res) {
-                if (res.success) {
+                if (res && res.success) {
                     location.reload();
                 } else {
-                    console.log("Adres eklenirken hata oluştu: " + res.message);
+                    console.error("Adres eklenirken hata oluştu: " + (res?.message || "Bilinmeyen hata"));
                 }
             },
             error: function (xhr, status, error) {
-                console.log("Hata:", error);
+                console.error("Sunucu hatası:", error);
             }
         });
     });
+
 });
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,

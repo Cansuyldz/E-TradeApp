@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using MVC_E_ticaretWeb.Migrations;
 using MVC_E_ticaretWeb.Models;
@@ -39,6 +40,7 @@ namespace MVC_E_ticaretWeb.Controllers
         {
             AddressSuccessViewModel response = new();
             var user = GetUserBySession();
+
             if (user == null)
             {
                 response.Message = "Kullanıcı bulunamadı!";
@@ -46,39 +48,50 @@ namespace MVC_E_ticaretWeb.Controllers
                 return response;
             }
 
-            var ishaveAddress = _context.Adresses.FirstOrDefault(a =>
-                a.UserId == user.Id &&
-                a.Name == Name &&
-                a.Surname == Surname &&
-                a.Phone == Phone &&
-                a.Streetaddress == Streetaddress &&
-                a.AddressLine == AddressLine &&
-                a.Province == Province &&
-                a.District == District &&
-                a.Neighbourhood == Neighbourhood);
-
-            if (ishaveAddress == null)
+            try
             {
-                _context.Adresses.Add(new Models.Adress()
+                var ishaveAddress = _context.Adresses.FirstOrDefault(a =>
+                    a.UserId == user.Id &&
+                    a.Name == Name &&
+                    a.Surname == Surname &&
+                    a.Phone == Phone &&
+                    a.Streetaddress == Streetaddress &&
+                    a.AddressLine == AddressLine &&
+                    a.Province == Province &&
+                    a.District == District &&
+                    a.Neighbourhood == Neighbourhood);
+
+                if (ishaveAddress == null)
                 {
-                    UserId = user.Id,
-                    Name = Name,
-                    Surname = Surname,
-                    Phone = Phone,
-                    Streetaddress = Streetaddress,
-                    AddressLine = AddressLine,
-                    Province = Province,
-                    District = District,
-                    Neighbourhood = Neighbourhood
-                });
-                _context.SaveChanges();
-                response.Message = "Adres başarıyla eklendi.";
-                response.Success = true;
-                return response;
+                    _context.Adresses.Add(new Models.Adress()
+                    {
+                        UserId = user.Id,
+                        Name = Name,
+                        Surname = Surname,
+                        Phone = Phone,
+                        Streetaddress = Streetaddress,
+                        AddressLine = AddressLine,
+                        Province = Province,
+                        District = District,
+                        Neighbourhood = Neighbourhood
+                    });
+
+                    _context.SaveChanges();
+                    response.Message = "Adres başarıyla eklendi.";
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Message = "Bu adres zaten eklenmiş.";
+                    response.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Adres eklenirken bir hata oluştu: " + ex.Message;
+                response.Success = false;
             }
 
-            response.Message = "Bu adres zaten ekli.";
-            response.Success = false;
             return response;
         }
 
@@ -101,13 +114,21 @@ namespace MVC_E_ticaretWeb.Controllers
                 return RedirectToAction("Delivery");
             }
 
+            var cartProducts = _context.CartProducts
+                                       .Where(cp => cp.CartId == cart.Id)
+                                       .Include(cp => cp.Product)  
+                                       .ToList();
+
             CartAddressViewModel viewModel = new CartAddressViewModel
             {
                 Cart = cart,
-                Adresses = adresses
+                Adresses = adresses,
+                CartProducts = cartProducts,
             };
 
             return View(viewModel);
         }
+
+
     }
 }
