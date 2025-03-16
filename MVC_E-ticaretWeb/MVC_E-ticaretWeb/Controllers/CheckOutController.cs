@@ -95,6 +95,11 @@ namespace MVC_E_ticaretWeb.Controllers
             return response;
         }
 
+        [HttpPost("NewCart")]
+        public CartSuccessViewModel NewCart(int UserId, string NameonCard, string KartNumber,int Cvc, int Date,int Year, bool Success)
+        {
+
+        }
         [HttpPost("/checkout/payment")]
         public IActionResult Payment()
         {
@@ -116,18 +121,24 @@ namespace MVC_E_ticaretWeb.Controllers
 
             var cartProducts = _context.CartProducts
                                        .Where(cp => cp.CartId == cart.Id)
-                                       .Include(cp => cp.Product)  
+                                       .Include(cp => cp.Product)
                                        .ToList();
+
+            var creditcards = _context.Creditcards
+                                      .Where(c => c.UserId == user.Id)
+                                      .ToList();
 
             CartAddressViewModel viewModel = new CartAddressViewModel
             {
                 Cart = cart,
                 Adresses = adresses,
                 CartProducts = cartProducts,
+                Creditcards = creditcards ?? new List<Creditcard>() 
             };
 
             return View(viewModel);
         }
+
 
 
     }

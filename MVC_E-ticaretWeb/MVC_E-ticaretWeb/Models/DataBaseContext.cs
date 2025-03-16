@@ -16,6 +16,7 @@ namespace MVC_E_ticaretWeb.Models
         public DbSet<Favorite> Favorites { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Adress> Adresses { get; set; }
+        public DbSet<Creditcard> Creditcards { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -137,7 +137,6 @@ $(document).ready(function () {
             console.warn("Lütfen tüm alanları doldurunuz!");
             return;
         }
-
         var params = {
             Name: name,
             Surname: surname,
@@ -166,6 +165,46 @@ $(document).ready(function () {
         });
     });
 
+    $(document).on("click", ".js-add-card-save", function () {
+        var _t = $(this);
+        var form = _t.closest("form");
+
+        if (!form.length) {
+            console.error("Form bulunamadı!");
+            return;
+        }
+        var cartName = form.find("input[name='NameonCard']").val().trim();
+        var cartNumber = form.find("input[name='KartNumber']").val().trim();
+        var date = form.find("input[name='Date']").val().trim();
+        var year = form.find("input[name='Year']").val().trim();
+        var cvc = form.find("input[name='Cvc']").val().trim();
+        if (!cartName || !cartNumber || !date || !year || !cvc) {
+            console.warn("Lütfen bu alanları doldurun");
+            return;
+        }
+        var params = {
+            NameonCard= cartName,
+            KartNumber = cartNumber,
+            Datte = date,
+            Year =year,
+            Cvc = cvc
+        };
+        $.ajax({
+            url: "/checkout/NewCart",
+            type: "POST",
+            data: params,
+            success: function (res) {
+                if (res && res.success) {
+                    location.reload();
+                } else {
+                    console.error("Kart eklenirken hata oluştu: " + (res?.message || "Bilinmeyen hata"));
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Sunucu hatası:", error);
+            }
+        })
+    });
 });
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,

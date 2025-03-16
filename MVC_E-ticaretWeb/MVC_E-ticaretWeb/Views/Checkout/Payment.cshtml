@@ -4,45 +4,120 @@
     Layout = "./_Layout";
 }
 <h2>Ödeme Seçenekleri</h2>
-<div class="accordion" id="cartAccordion">
-    <div class="accordion-item border rounded">
-        <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button d-flex justify-content-between align-items-center"
-                    type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="false" aria-controls="collapseOne">
-                @if (Model != null && Model.CartProducts != null)
-                {
-                    <strong>Sepetimdeki Ürünler (@Model.CartProducts.Count)</strong>
-                }
-                else
-                {
-                    <strong>Sepetimde Ürün Yok</strong>
-                }
+<div class="row">
+    <div class="col-md-8">
+        <div class="accordion" id="cartAccordion">
+            <div class="accordion-item border rounded">
+                <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button d-flex justify-content-between align-items-center"
+                            type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                            aria-expanded="false" aria-controls="collapseOne">
+                        @if (Model != null && Model.CartProducts != null)
+                        {
+                            <strong>Sepetimdeki Ürünler (@Model.CartProducts.Count)</strong>
+                        }
+                        else
+                        {
+                            <strong>Sepetimde Ürün Yok</strong>
+                        }
 
 
-                @if (Model.CartProducts.Any())
-                {
-                    <img src="@Model.CartProducts.First().Product.Image" alt="Ürün" class="rounded-circle ms-2" width="40">
-                }
-            </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
-            <div class="accordion-body">
-                @foreach (var cartProduct in Model.CartProducts)
-                {
-                    <div class="d-flex align-items-center">
-                        <img src="@Url.Content(cartProduct.Product.Image.StartsWith("images/") ? $"/{cartProduct.Product.Image}" : $"/images/{cartProduct.Product.Image}")"
-                             class="me-3 border rounded" width="50">
+                        @if (Model.CartProducts.Any())
+                        {
+                            <img src="@Model.CartProducts.First().Product.Image" alt="Ürün" class="rounded-circle ms-2" width="40">
+                        }
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne">
+                    <div class="accordion-body">
+                        @foreach (var cartProduct in Model.CartProducts)
+                        {
+                            <div class="d-flex align-items-center">
+                                <img src="@Url.Content(cartProduct.Product.Image.StartsWith("images/") ? $"/{cartProduct.Product.Image}" : $"/images/{cartProduct.Product.Image}")"
+                                     class="me-3 border rounded" width="50">
 
-                        <div>
-                            <span class="badge bg-light text-dark">x @cartProduct.Quantity</span>
+                                <div>
+                                    <span class="badge bg-light text-dark">x @cartProduct.Quantity</span>
 
-                            <p class="fw-bold text-danger">@cartProduct.TotalPrice TL</p>
-                        </div>
+                                    <p class="fw-bold text-danger">@cartProduct.TotalPrice TL</p>
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
         </div>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card-custom">
+                    <h5 class="text-success fw-bold">Kredi Kartı Bilgileri</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Kart Numarası</label>
+                            <input type="text" class="form-control" name="KartNumber" placeholder="**** **** **** ****">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kart Üzerindeki İsim</label>
+                            <input type="text" class="form-control" name="NameonCard" placeholder="Ad Soyad">
+                        </div>
+                        <div class="d-flex">
+                            <input type="text" class="form-control me-2" name="Date" placeholder="MM">
+                            <input type="text" class="form-control me-2" name="Year" placeholder="MM">
+                            <input type="text" class="form-control" nanme="Cvc" placeholder="CVC">
+                        </div>
+                        <button class="btn btn-success w-100 mt-3 js-add-card-save">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+            @foreach (var creditcart in Model.Creditcards){
+               <div class="col-md-6 d-flex">
+                   <div class="col-lg-6 col-md-12 mb-3">
+                      <div class="card p-3 border">
+                           <div class="d-flex align-items-center">
+                               <input type="radio" name="adres" class="me-2">
+                                <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                                <p class="mb-0 fw-bold">@creditcart.NameonCard</p>
+                           </div>
+                        <div>
+                            <p class=" mb-1">@creditcart.KartNumber</p>
+                            <p class="mb-1"> @creditcart.Date / @creditcart.Year</p>
+                            <p class="mb-0"> @creditcart.Cvc</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
     </div>
+
+
+    <div class="col-md-4">
+        <form asp-controller="Checkout" asp-action="Payment" method="post">
+            <div class="card p-3 delivery-summary">
+                <h5 class="fw-bold">Sipariş Özeti</h5>
+                <p class="d-flex justify-content-between">
+                    <span>Ürünün Toplamı</span>
+                    <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                </p>
+                <p class="d-flex justify-content-between">
+                    <span>Kargo Toplam</span>
+                    <span class="fw-bold">44,99 TL</span>
+                </p>
+                <p class="d-flex justify-content-between text-success">
+                    <span>250 TL ve Üzeri Kargo Bedava</span>
+                    <span>-44,99 TL</span>
+                </p>
+                <hr>
+                <p class="d-flex justify-content-between">
+                    <span class="fw-bold">Toplam</span>
+                    <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
+                </p>
+                <button class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton">Kaydet ve Devam Et</button>
+            </div>
+        </form>
+    </div>
+   
 </div>
+
 

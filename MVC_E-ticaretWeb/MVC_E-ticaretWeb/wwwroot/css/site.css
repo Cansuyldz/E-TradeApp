@@ -179,5 +179,13 @@ img {
     margin-bottom:30px;
 }
 
-
+.credit-card {
+    width: 100%;
+    max-width: 400px;
+    background: linear-gradient(135deg, #ff9f43, #ff6b6b);
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+    font-size: 1.2rem;
+}
 
