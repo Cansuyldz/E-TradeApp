@@ -16,28 +16,28 @@ namespace MVC_E_ticaretWeb.Controllers
         public IActionResult Delivery()
         {
 
-          User user = GetUserBySession();
-              if (user == null)
-              {
-                  return Redirect("/account/login");
-              }
+            User user = GetUserBySession();
+            if (user == null)
+            {
+                return Redirect("/account/login");
+            }
 
-               Cart cart = GetCurrentUserCart();
-                    List<Adress> adresses = _context.Adresses
-                                    .Where(a => a.UserId == user.Id)
-                                    .ToList();
+            Cart cart = GetCurrentUserCart();
+            List<Adress> adresses = _context.Adresses
+                            .Where(a => a.UserId == user.Id)
+                            .ToList();
 
-                    CartAddressViewModel viewModel = new CartAddressViewModel
-                         {
-                             Cart = cart,
-                           Adresses = adresses
-                    };
+            CartAddressViewModel viewModel = new CartAddressViewModel
+            {
+                Cart = cart,
+                Adresses = adresses
+            };
 
-               return View(viewModel);
+            return View(viewModel);
         }
-    
+
         [HttpPost("Newaddress")]
-        public AddressSuccessViewModel Newaddress(int UserId,string Name,string Surname, string Phone,string Streetaddress,string AddressLine, string Province, string District, string Neighbourhood)
+        public AddressSuccessViewModel Newaddress(int UserId, string Name, string Surname, string Phone, string Streetaddress, string AddressLine, string Province, string District, string Neighbourhood)
         {
             AddressSuccessViewModel response = new();
             var user = GetUserBySession();
@@ -96,61 +96,61 @@ namespace MVC_E_ticaretWeb.Controllers
             return response;
         }
 
-         [HttpPost("NewCart")]
-         public CartSuccessViewModel NewCart(int UserId, string NameonCard, string KartNumber,string Cvc, string Date,string Year)
-          {
-            CartSuccessViewModel response = new();
-        var user = GetUserBySession();
-
-    if (user == null)
-    {
-        response.Message = "Kullanıcı bulunamadı!";
-        response.Success = false;
-        return response;
-    }
-
-    try
-    {
-        var existingCard = _context.Creditcards.FirstOrDefault(c =>
-            c.UserId == user.Id &&
-            c.NameonCard == NameonCard &&
-            c.KartNumber == KartNumber &&
-            c.Date == Date &&
-            c.Year == Year &&
-            c.Cvc == Cvc);
-
-        if (existingCard == null)
+        [HttpPost("NewCart")]
+        public CartSuccessViewModel NewCart(int UserId, string NameonCard, string KartNumber, string Cvc, string Date, string Year)
         {
-            _context.Creditcards.Add(new Models.Creditcard()
-            {
-                UserId = user.Id,
-                NameonCard = NameonCard,
-                KartNumber = KartNumber, 
-                Date = Date,
-                Year = Year,
-                Cvc = Cvc
-            });
+            CartSuccessViewModel response = new();
+            var user = GetUserBySession();
 
-_context.SaveChanges();
-response.Message = "Kart bilgileri başarıyla kaydedildi.";
-response.Success = true;
-        }
-        else
-{
-    response.Message = "Bu kart bilgisi zaten eklenmiş.";
-    response.Success = false;
-}
-    }
-    catch (Exception ex)
-    {
+            if (user == null)
+            {
+                response.Message = "Kullanıcı bulunamadı!";
+                response.Success = false;
+                return response;
+            }
+
+            try
+            {
+                var existingCard = _context.Creditcards.FirstOrDefault(c =>
+                    c.UserId == user.Id &&
+                    c.NameonCard == NameonCard &&
+                    c.KartNumber == KartNumber &&
+                    c.Date == Date &&
+                    c.Year == Year &&
+                    c.Cvc == Cvc);
+
+                if (existingCard == null)
+                {
+                    _context.Creditcards.Add(new Models.Creditcard()
+                    {
+                        UserId = user.Id,
+                        NameonCard = NameonCard,
+                        KartNumber = KartNumber,
+                        Date = Date,
+                        Year = Year,
+                        Cvc = Cvc
+                    });
+
+                    _context.SaveChanges();
+                    response.Message = "Kart bilgileri başarıyla kaydedildi.";
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Message = "Bu kart bilgisi zaten eklenmiş.";
+                    response.Success = false;
+                }
+            }
+            catch (Exception ex)
+            {
                 var innerMessage = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                 response.Message = "Kart bilgileri eklenirken bir hata oluştu: " + innerMessage;
                 response.Success = false;
             }
 
-    return response;
- }
-[HttpPost("/checkout/payment")]
+            return response;
+        }
+        [HttpPost("/checkout/payment")]
         public IActionResult Payment()
         {
             User user = GetUserBySession();
@@ -183,7 +183,7 @@ response.Success = true;
                 Cart = cart,
                 Adresses = adresses,
                 CartProducts = cartProducts,
-                Creditcards = creditcards ?? new List<Creditcard>() 
+                Creditcards = creditcards ?? new List<Creditcard>()
             };
 
             return View(viewModel);
