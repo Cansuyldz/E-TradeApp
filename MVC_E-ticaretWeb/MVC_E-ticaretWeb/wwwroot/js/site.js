@@ -165,45 +165,47 @@ $(document).ready(function () {
         });
     });
 
-    $(document).on("click", ".js-add-card-save", function () {
-        var _t = $(this);
-        var form = _t.closest("form");
+    $(document).on("click", ".js-add-card-save", function (e) {
+        e.preventDefault();
 
+        var form = $(this).closest("form");
         if (!form.length) {
             console.error("Form bulunamadı!");
             return;
         }
-        var cartName = form.find("input[name='NameonCard']").val().trim();
-        var cartNumber = form.find("input[name='KartNumber']").val().trim();
+
+        var nameonCard = form.find("input[name='NameonCard']").val().trim();
+        var kartNumber = form.find("input[name='KartNumber']").val().trim();
         var date = form.find("input[name='Date']").val().trim();
         var year = form.find("input[name='Year']").val().trim();
         var cvc = form.find("input[name='Cvc']").val().trim();
-        if (!cartName || !cartNumber || !date || !year || !cvc) {
-            console.warn("Lütfen bu alanları doldurun");
+        if (!kartNumber || !nameonCard || !date || !year || !cvc) {
+            console.warn("Lütfen tüm alanları doldurunuz!");
             return;
         }
         var params = {
-            NameonCard= cartName,
-            KartNumber = cartNumber,
-            Datte = date,
-            Year =year,
-            Cvc = cvc
+            KartNumber: kartNumber,
+            NameonCard: nameonCard,
+            Date: date,
+            Year: year,
+            Cvc: cvc,
         };
         $.ajax({
             url: "/checkout/NewCart",
             type: "POST",
             data: params,
             success: function (res) {
-                if (res && res.success) {
+                if (res.success) {
+                    alert("Kart başarıyla kaydedildi!");
                     location.reload();
                 } else {
-                    console.error("Kart eklenirken hata oluştu: " + (res?.message || "Bilinmeyen hata"));
+                    alert(res.message);
                 }
             },
-            error: function (xhr, status, error) {
-                console.error("Sunucu hatası:", error);
+            error: function (xhr) {
+                alert("Kart kaydedilirken hata oluştu: " + xhr.responseText);
             }
-        })
+        });
     });
 });
 var swiper = new Swiper(".mySwiper", {
@@ -219,6 +221,7 @@ var swiper = new Swiper(".mySwiper", {
         clickable: true,
     },
 });
+
 function toggleCardForm() {
     document.getElementById('cardList').classList.toggle('hidden');
     document.getElementById('newCardForm').classList.toggle('hidden');

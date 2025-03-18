@@ -5,7 +5,7 @@
 }
 <h2>Ödeme Seçenekleri</h2>
 <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-9">
         <div class="accordion" id="cartAccordion">
             <div class="accordion-item border rounded">
                 <h2 class="accordion-header" id="headingOne">
@@ -52,7 +52,7 @@
             <div class="col-md-6">
                 <div class="card-custom">
                     <h5 class="text-success fw-bold">Kredi Kartı Bilgileri</h5>
-                    <form>
+                    <form method="post">
                         <div class="mb-3">
                             <label class="form-label">Kart Numarası</label>
                             <input type="text" class="form-control" name="KartNumber" placeholder="**** **** **** ****">
@@ -63,36 +63,38 @@
                         </div>
                         <div class="d-flex">
                             <input type="text" class="form-control me-2" name="Date" placeholder="MM">
-                            <input type="text" class="form-control me-2" name="Year" placeholder="MM">
-                            <input type="text" class="form-control" nanme="Cvc" placeholder="CVC">
+                            <input type="text" class="form-control me-2" name="Year" placeholder="YY">
+                            <input type="text" class="form-control" name="Cvc" placeholder="CVC">
                         </div>
                         <button class="btn btn-success w-100 mt-3 js-add-card-save">Kaydet</button>
                     </form>
                 </div>
             </div>
-            @foreach (var creditcart in Model.Creditcards){
-               <div class="col-md-6 d-flex">
-                   <div class="col-lg-6 col-md-12 mb-3">
-                      <div class="card p-3 border">
-                           <div class="d-flex align-items-center">
-                               <input type="radio" name="adres" class="me-2">
-                                <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
-                                <p class="mb-0 fw-bold">@creditcart.NameonCard</p>
-                           </div>
-                        <div>
-                            <p class=" mb-1">@creditcart.KartNumber</p>
-                            <p class="mb-1"> @creditcart.Date / @creditcart.Year</p>
-                            <p class="mb-0"> @creditcart.Cvc</p>
+            <div class="col-md-6">
+                <div class="d-flex flex-wrap gap-3">
+                    @foreach (var creditcart in Model.Creditcards)
+                    {
+                        <div class="col-lg-5 col-md-12">
+                            <div class="card p-3 border">
+                                <div class="d-flex align-items-center">
+                                    <input type="radio" name="adres" class="me-2">
+                                    <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                                    <p class="mb-0">@creditcart.NameonCard</p>
+                                </div>
+                                <div>
+                                    <p class="mb-1">@creditcart.KartNumber</p>
+                                    <p class="mb-1">@creditcart.Date / @creditcart.Year</p>
+                                    <p class="mb-0">@creditcart.Cvc</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
-            }
         </div>
     </div>
 
-
-    <div class="col-md-4">
+    <div class="col-md-3">
         <form asp-controller="Checkout" asp-action="Payment" method="post">
             <div class="card p-3 delivery-summary">
                 <h5 class="fw-bold">Sipariş Özeti</h5>
@@ -113,10 +115,24 @@
                     <span class="fw-bold">Toplam</span>
                     <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
                 </p>
-                <button class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton">Kaydet ve Devam Et</button>
+
+                <div class="form-check my-2">
+                    <input class="form-check-input" type="checkbox" id="termsCheckbox">
+                    <label class="form-check-label" for="termsCheckbox">
+                        <a href="#" class="text-decoration-none">Ön Bilgilendirme Koşulları</a>’nı ve
+                        <a href="#" class="text-decoration-none">Mesafeli Satış Sözleşmesi</a>’ni okudum, onaylıyorum.
+                    </label>
+                </div>
+
+                <button class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton" disabled>
+                    Ödeme Yap
+                </button>
             </div>
         </form>
     </div>
+    
+
+
    
 </div>
 

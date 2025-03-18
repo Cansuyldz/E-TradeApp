@@ -5,7 +5,7 @@ namespace MVC_E_ticaretWeb.ViewModels
 {
     public class CartAddressViewModel
     {
-        public Cart Cart { get; set; } // Liste yerine tek bir Cart
+        public Cart Cart { get; set; } 
         public List<Product> Products { get; set; }
         public List<CartProduct> CartProducts { get; set; }
         public List<Adress> Adresses { get; set; }

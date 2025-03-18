@@ -24,5 +24,6 @@ namespace MVC_E_ticaretWeb.Models
 
         public int? CartId { get; set; }
         public Cart Cart { get; set; }
+        public bool IsSelected { get; internal set; }
     }
 }
