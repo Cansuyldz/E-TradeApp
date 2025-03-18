@@ -17,11 +17,11 @@ namespace MVC_E_ticaretWeb.Controllers
         {
             var userMail = HttpContext.Session.GetString("mail");
             if (string.IsNullOrEmpty(userMail))
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Authorize");
 
             var user = _context.Users.FirstOrDefault(u => u.Mail == userMail);
             if (user == null)
-                return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Authorize");
 
             var favoriteProducts = _context.Favorites
                 .Where(f => f.UserId == user.Id)

@@ -84,18 +84,50 @@ namespace MVC_E_ticaretWeb.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cart",
+                name: "Adresses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Streetaddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Neighbourhood = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cart", x => x.Id);
+                    table.PrimaryKey("PK_Adresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cart_Users_UserId",
+                        name: "FK_Adresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Creditcards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NameonCard = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    KartNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Cvc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Date = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Year = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Creditcards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Creditcards_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -122,6 +154,31 @@ namespace MVC_E_ticaretWeb.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Favorites_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cart",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    AddressId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cart", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cart_Adresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Adresses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Cart_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -158,6 +215,16 @@ namespace MVC_E_ticaretWeb.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Adresses_UserId",
+                table: "Adresses",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cart_AddressId",
+                table: "Cart",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cart_UserId",
                 table: "Cart",
                 column: "UserId");
@@ -171,6 +238,11 @@ namespace MVC_E_ticaretWeb.Migrations
                 name: "IX_CartProducts_ProductId",
                 table: "CartProducts",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Creditcards_UserId",
+                table: "Creditcards",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Favorites_ProductId",
@@ -195,6 +267,9 @@ namespace MVC_E_ticaretWeb.Migrations
                 name: "CartProducts");
 
             migrationBuilder.DropTable(
+                name: "Creditcards");
+
+            migrationBuilder.DropTable(
                 name: "Favorites");
 
             migrationBuilder.DropTable(
@@ -207,10 +282,13 @@ namespace MVC_E_ticaretWeb.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Adresses");
 
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

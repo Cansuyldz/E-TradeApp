@@ -12,7 +12,7 @@
             </div>
             <div class="col-md-7">
                 <h3 class="text-center">Sign In</h3>
-                <form asp-action="Login" asp-controller="Account">
+                <form asp-action="Login" asp-controller="Authorize">
                     <div class="mb-3">
                         <label class="form-label">E-mail</label>
                         <input name="mail" type="text" class="form-control" placeholder="Username" required value="yildiz@gmail.com">
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="text-center mt-3">
-                        Not a member? <a href="~/Account/Register" class="text-decoration-none text-primary">Üye Ol</a>
+                        Not a member? <a href="~/Authorize/Register" class="text-decoration-none text-primary">Üye Ol</a>
                     </div>
 
                     @* @{

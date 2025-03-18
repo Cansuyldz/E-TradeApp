@@ -1,5 +1,4 @@
-﻿using MVC_E_ticaretWeb.Migrations;
-using MVC_E_ticaretWeb.Models;
+﻿using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.ViewModels
 {
@@ -8,7 +7,7 @@ namespace MVC_E_ticaretWeb.ViewModels
         public Cart Cart { get; set; } 
         public List<Product> Products { get; set; }
         public List<CartProduct> CartProducts { get; set; }
-        public List<Adress> Adresses { get; set; }
+        public List<Address> Adresses { get; set; }
         public List<Creditcard> Creditcards { get; set; }
 
     }

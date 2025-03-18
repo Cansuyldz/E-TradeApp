@@ -1,8 +1,5 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using MVC_E_ticaretWeb.Migrations;
 using MVC_E_ticaretWeb.Models;
 using MVC_E_ticaretWeb.ViewModels;
 
@@ -23,7 +20,7 @@ namespace MVC_E_ticaretWeb.Controllers
             }
 
             Cart cart = GetCurrentUserCart();
-            List<Adress> adresses = _context.Adresses
+            List<Address> adresses = _context.Adresses
                             .Where(a => a.UserId == user.Id)
                             .ToList();
 
@@ -36,8 +33,8 @@ namespace MVC_E_ticaretWeb.Controllers
             return View(viewModel);
         }
 
-        [HttpPost("Newaddress")]
-        public AddressSuccessViewModel Newaddress(int UserId, string Name, string Surname, string Phone, string Streetaddress, string AddressLine, string Province, string District, string Neighbourhood)
+        [HttpPost("NewAddress")]
+        public AddressSuccessViewModel NewAddress(Address address)
         {
             AddressSuccessViewModel response = new();
             var user = GetUserBySession();
@@ -53,29 +50,19 @@ namespace MVC_E_ticaretWeb.Controllers
             {
                 var ishaveAddress = _context.Adresses.FirstOrDefault(a =>
                     a.UserId == user.Id &&
-                    a.Name == Name &&
-                    a.Surname == Surname &&
-                    a.Phone == Phone &&
-                    a.Streetaddress == Streetaddress &&
-                    a.AddressLine == AddressLine &&
-                    a.Province == Province &&
-                    a.District == District &&
-                    a.Neighbourhood == Neighbourhood);
+                    a.Name == address.Name &&
+                    a.Surname == address.Surname &&
+                    a.Phone == address.Phone &&
+                    a.Streetaddress == address.Streetaddress &&
+                    a.AddressLine == address.AddressLine &&
+                    a.Province == address.Province &&
+                    a.District == address.District &&
+                    a.Neighbourhood == address.Neighbourhood);
 
                 if (ishaveAddress == null)
                 {
-                    _context.Adresses.Add(new Models.Adress()
-                    {
-                        UserId = user.Id,
-                        Name = Name,
-                        Surname = Surname,
-                        Phone = Phone,
-                        Streetaddress = Streetaddress,
-                        AddressLine = AddressLine,
-                        Province = Province,
-                        District = District,
-                        Neighbourhood = Neighbourhood
-                    });
+                    address.UserId = user.Id;
+                    _context.Adresses.Add(address);
 
                     _context.SaveChanges();
                     response.Message = "Adres başarıyla eklendi.";
@@ -150,6 +137,7 @@ namespace MVC_E_ticaretWeb.Controllers
 
             return response;
         }
+
         [HttpPost("/checkout/payment")]
         public IActionResult Payment()
         {
@@ -160,7 +148,7 @@ namespace MVC_E_ticaretWeb.Controllers
             }
 
             Cart cart = GetCurrentUserCart();
-            List<Adress> adresses = _context.Adresses
+            List<Address> adresses = _context.Adresses
                                             .Where(a => a.UserId == user.Id)
                                             .ToList();
 
@@ -187,6 +175,23 @@ namespace MVC_E_ticaretWeb.Controllers
             };
 
             return View(viewModel);
+        }
+        
+        [HttpPost("/checkout/SetAddress")]
+        public async Task<bool> SetAddress(int addressId)
+        {
+            User user = GetUserBySession();
+            if(user == null)
+            {
+                throw new Exception("adres setlerken hata");
+            }
+
+            Cart cart = GetCurrentUserCart();
+            cart.AddressId = addressId;
+
+            _context.Cart.Update(cart);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
 

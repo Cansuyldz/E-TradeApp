@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVC_E_ticaretWeb.Models
 {
-    public class Adress
+    public class Address
     {
         [Key]
         public int Id { get; set; }
@@ -21,9 +21,5 @@ namespace MVC_E_ticaretWeb.Models
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
-
-        public int? CartId { get; set; }
-        public Cart Cart { get; set; }
-        public bool IsSelected { get; internal set; }
     }
 }

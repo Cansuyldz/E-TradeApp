@@ -20,7 +20,7 @@
 
                 <form id="add-address-form">
                     <div class="row mb-3">
-                        <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                        @* <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" /> *@
 
                         <div class="col-md-6">
                           
@@ -71,8 +71,7 @@
                     <div class="col-lg-6 col-md-12 mb-3">
                         <div class="card p-3 border">
                             <div class="d-flex align-items-center">
-                                <input type="radio" name="adres" class="me-2">
-                                <input type="hidden" name="UserId" value="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value" />
+                                <input class="js_select_address me-2" type="radio" name="adres" value="@address.Id" @(Model.Cart.AddressId == address.Id ? "checked" : "")>
 
                                 <h5 class="mb-0">@address.AddressLine</h5>
                             </div>
@@ -108,7 +107,7 @@
                         <span class="fw-bold">Toplam</span>
                         <span class="fw-bold">@Model.Cart.CartProducts.Sum(x => x.TotalPrice) TL</span>
                     </p>
-                    <button class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton">Kaydet ve Devam Et</button>
+                    <button @(Model.Cart.AddressId == null ? "disabled" : "") class="btn btn-warning w-100 mb-2 fw-bold" type="submit" id="kaydetButton">Kaydet ve Devam Et</button>
                 </div>
             </form>
         </div>

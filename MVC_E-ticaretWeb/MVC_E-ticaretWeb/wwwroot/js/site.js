@@ -20,9 +20,9 @@ $(document).ready(function () {
     });
     $("#kaydetButton").click(function (e) {
         if ($("input[name=adres]:checked").length === 0) {
-            e.preventDefault(); 
+            e.preventDefault();
         } else {
-            window.location.replace("/checkout/payment"); 
+            window.location.replace("/checkout/payment");
             console.log("Yönlendirme çalıştı mı?");
         }
     });
@@ -96,20 +96,18 @@ $(document).ready(function () {
         $.ajax({
             url: "/Favorite/AddOrRemoveFavorite",
             type: "POST",
-            data: { productId: datas.productId, isAdded: datas.isAdded },
+            data: { productId: datas.productId },
             success: function (res) {
-                if (res.success === true) {
+                if (res != undefined && res.success === true) {
                     if (datas.remove == true) {
                         _t.closest('.favorite-item[data-product-id="' + datas.productId + '"]').remove();
                         $('.fav-list .favorite-item').length > 0 ? null : location.reload();
                         return;
                     }
-                    _t.data('isAdded', !datas.isAdded);
-                    //alert(res.message);
-                    if (datas.isAdded == true) {
-                        icon.addClass("bi-heart").removeClass("bi-heart-fill text-danger");
-                    } else {
+                    if (res.isFavoriteAdded == true) {
                         icon.removeClass("bi-heart").addClass("bi-heart-fill text-danger");
+                    } else {
+                        icon.addClass("bi-heart").removeClass("bi-heart-fill text-danger");
                     }
                 }
             }
@@ -124,34 +122,24 @@ $(document).ready(function () {
             return;
         }
 
-        var name = form.find("input[name='Name']").val().trim();
-        var surname = form.find("input[name='Surname']").val().trim();
-        var phone = form.find("input[name='Phone']").val().trim();
-        var province = form.find("input[name='Province']").val().trim();
-        var district = form.find("input[name='District']").val().trim();
-        var neighbourhood = form.find("input[name='Neighbourhood']").val().trim();
-        var streetaddress = form.find("input[name='Streetaddress']").val().trim();
-        var addressLine = form.find("input[name='AddressLine']").val().trim();
+        var errCount = 0;
+        form.serializeArray().forEach(function (item) {
+            var value = item.value.trim();
+            if (value.length == 0) {
+                errCount++;
+            }
+        })
 
-        if (!name || !surname || !phone || !province || !district || !neighbourhood || !streetaddress || !addressLine) {
+        if (errCount > 0) {
             console.warn("Lütfen tüm alanları doldurunuz!");
             return;
         }
-        var params = {
-            Name: name,
-            Surname: surname,
-            Phone: phone,
-            Province: province,
-            District: district,
-            Neighbourhood: neighbourhood,
-            Streetaddress: streetaddress,
-            AddressLine: addressLine
-        };
+
 
         $.ajax({
             url: "/checkout/Newaddress",
             type: "POST",
-            data: params,
+            data: form.serialize(),
             success: function (res) {
                 if (res && res.success) {
                     location.reload();
@@ -207,6 +195,23 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(document).on('click', '.js_select_address', function () {
+        var _t = $(this);
+        $.ajax({
+            url: "/checkout/SetAddress",
+            type: "POST",
+            data: { addressId: _t.val() },
+            success: function (res) {
+                if (res) {
+                    location.reload()
+                }
+            },
+            error: function (xhr) {
+                alert("Adres seçilirken hata oluştu: " + xhr.responseText);
+            }
+        });
+    })
 });
 var swiper = new Swiper(".mySwiper", {
     slidesPerView: 1,

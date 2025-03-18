@@ -44,9 +44,13 @@
 
     <script src="~/js/site.js"></script>
     <script>
-                document.getElementById('termsCheckbox').addEventListener('change', function () {
-            document.getElementById('kaydetButton').disabled = !this.checked;
-        });
+        var termsElement = document.getElementById('termsCheckbox');
+        if(termsElement != null){
+            termsElement.addEventListener('change', function () {
+                    document.getElementById('kaydetButton').disabled = !this.checked;
+            });
+        }
+
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

@@ -22,7 +22,7 @@ namespace MVC_E_ticaretWeb.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Adress", b =>
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,9 +33,6 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.Property<string>("AddressLine")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CartId")
-                        .HasColumnType("int");
 
                     b.Property<string>("District")
                         .IsRequired()
@@ -70,8 +67,6 @@ namespace MVC_E_ticaretWeb.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Adresses");
@@ -85,10 +80,15 @@ namespace MVC_E_ticaretWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("UserId");
 
@@ -218,34 +218,54 @@ namespace MVC_E_ticaretWeb.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Alici")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Durum")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ozet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResimUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Tarih")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("TeslimTarihi")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("Tutar")
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.OrderProducts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("BasePrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Product", b =>
@@ -310,30 +330,30 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Adress", b =>
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Address", b =>
                 {
-                    b.HasOne("MVC_E_ticaretWeb.Models.Cart", "Cart")
-                        .WithMany("Adresses")
-                        .HasForeignKey("CartId");
-
                     b.HasOne("MVC_E_ticaretWeb.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Cart", b =>
                 {
+                    b.HasOne("MVC_E_ticaretWeb.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("MVC_E_ticaretWeb.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Address");
 
                     b.Navigation("User");
                 });
@@ -387,6 +407,42 @@ namespace MVC_E_ticaretWeb.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Order", b =>
+                {
+                    b.HasOne("MVC_E_ticaretWeb.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("MVC_E_ticaretWeb.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.OrderProducts", b =>
+                {
+                    b.HasOne("MVC_E_ticaretWeb.Models.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MVC_E_ticaretWeb.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Product", b =>
                 {
                     b.HasOne("MVC_E_ticaretWeb.Models.Category", "Category")
@@ -400,14 +456,17 @@ namespace MVC_E_ticaretWeb.Migrations
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Cart", b =>
                 {
-                    b.Navigation("Adresses");
-
                     b.Navigation("CartProducts");
                 });
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MVC_E_ticaretWeb.Models.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("MVC_E_ticaretWeb.Models.Product", b =>

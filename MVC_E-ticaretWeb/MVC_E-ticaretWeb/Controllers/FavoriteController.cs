@@ -12,7 +12,7 @@ namespace MVC_E_ticaretWeb.Controllers
         
 
         [HttpPost("AddOrRemoveFavorite")]
-        public FavoriteResponseViewModel AddOrRemoveFavorite(int productId, bool isAdded)
+        public FavoriteResponseViewModel AddOrRemoveFavorite(int productId)
         {
             FavoriteResponseViewModel response = new();
             var user = GetUserBySession();
@@ -23,7 +23,7 @@ namespace MVC_E_ticaretWeb.Controllers
             }
 
             var isHaveFavori = _context.Favorites.Where(f => f.UserId == user.Id && f.ProductId == productId).FirstOrDefault();
-            if (isHaveFavori == null && !isAdded)
+            if (isHaveFavori == null)
             {
                 _context.Favorites.Add(new Models.Favorite()
                 {
@@ -34,15 +34,17 @@ namespace MVC_E_ticaretWeb.Controllers
 
                 response.Message = "Ürün Favorilerinize eklendi.";
                 response.Success = true;
+                response.IsFavoriteAdded = true;
                 return response;
             }
 
-            if (isHaveFavori != null && isAdded)
+            if (isHaveFavori != null)
             {
                 _context.Favorites.Remove(isHaveFavori);
                 _context.SaveChanges();
 
                 response.Message = "Ürün Favorilerinizden çıkarıldı.";
+                response.IsFavoriteAdded = false;
                 response.Success = true;
                 return response;
             }
