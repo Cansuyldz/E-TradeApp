@@ -1,0 +1,13 @@
+﻿<form asp-area="Admin" asp-controller="Category" asp-action="Create" method="post">
+    <div class="form-group">
+        <label >Kategori Adı</label>
+        <input  class="form-control" name="Name" required />
+
+        <label>Kategori Açıklama</label>
+        <input class="form-control" name="Description" required />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary mt-3">Kaydet</button>
+    <a href="@Url.Action("Index", "Category", new { area = "Admin" })" class="btn btn-secondary mt-3">İptal</a>
+</form>

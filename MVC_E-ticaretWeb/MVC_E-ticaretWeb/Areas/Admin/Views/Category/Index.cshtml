@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MVC_E_ticaretWeb.Models.Category>
+@{
+    ViewBag.Title = "Kategoriler";
+}
+
+<h2 class="text-center">Kategoriler</h2>
+<a href="@Url.Action("Create", "Category", new { area = "Admin" })" class="btn btn-success">
+    Yeni Kategori Ekle
+</a>
+<table class="table table-bordered table-striped">
+    <thead class="bg-primary text-white">
+        <tr>
+            <th>#</th>
+            <th>Kategori Adı</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
