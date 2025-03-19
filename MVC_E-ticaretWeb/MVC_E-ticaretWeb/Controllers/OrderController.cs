@@ -43,12 +43,11 @@ namespace MVC_E_ticaretWeb.Controllers
 
             return Redirect("/order/confirmation");
         }
-        
+
         [HttpGet("/order/confirmation")]
         public async Task<IActionResult> OrderConfirmation()
         {
             return View();
         }
-
     }
 }

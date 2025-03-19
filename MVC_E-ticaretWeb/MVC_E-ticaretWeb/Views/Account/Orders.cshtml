@@ -24,10 +24,10 @@
                     <h5 class="card-title">
                         <strong>Sipariş Tarihi:</strong> @order.CreateDate.ToString("dd MMMM yyyy - HH:mm")
                     </h5>
-                    <p class="card-text"><strong>Teslimat Adresi:</strong> ---</p>
-                    <p class="card-text"><strong>Alıcı:</strong>@order.UserId</p>
+                    <p class="card-text"><strong>Teslimat Adresi:</strong></p>
+                    <p class="card-text"><strong>Alıcı:</strong></p>
 
-                    <p class="card-text"><strong>Tutar:</strong> <span class="text-success"> @order. TL</span></p>
+                    <p class="card-text"><strong>Tutar:</strong> <span class="text-success"> TL</span></p>
 
                     @* <div class="d-flex align-items-center">
                         <img src="@Url.Content(order.ResimUrl)" class="img-thumbnail me-3" style="width: 80px; height: auto;" />
@@ -37,7 +37,6 @@
                         </div>
                     </div> *@
 
-                    <a href="#" class="btn btn-outline-primary mt-2">Sipariş Detayı</a>
                 </div>
             </div>
         }

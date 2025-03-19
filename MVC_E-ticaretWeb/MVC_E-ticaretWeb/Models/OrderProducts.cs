@@ -22,7 +22,6 @@ namespace MVC_E_ticaretWeb.Models
 
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
-
         public decimal BasePrice { get; set; }
 
         public decimal TotalPrice { get; set; }
