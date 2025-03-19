@@ -24,8 +24,16 @@
                     <h5 class="card-title">
                         <strong>Sipariş Tarihi:</strong> @order.CreateDate.ToString("dd MMMM yyyy - HH:mm")
                     </h5>
-                    <p class="card-text"><strong>Teslimat Adresi:</strong></p>
-                    <p class="card-text"><strong>Alıcı:</strong></p>
+                    <p class="card-text">
+                        <strong>Teslimat Adresi:</strong>
+                        @(order.Address.Name + " " + order.Address.Streetaddress)
+                        </p>
+                    
+                    <p class="card-text">
+                        <strong>
+                            Alıcı: @(order.User.Name + " " + order.User.Surname)
+                        </strong>
+                    </p>
 
                     <p class="card-text"><strong>Tutar:</strong> <span class="text-success"> TL</span></p>
 

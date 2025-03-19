@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.Controllers
@@ -10,7 +11,10 @@ namespace MVC_E_ticaretWeb.Controllers
         public IActionResult Orders()
         {
             User user = GetUserBySession();
-            List<Order> orders = _context.Orders.Where(x => x.UserId == user.Id).ToList();
+            List<Order> orders = _context.Orders
+                .Include(x=> x.Address)
+                .Include(x=> x.User)
+                .Where(x => x.UserId == user.Id).ToList();
             return View(orders);
         }
     }

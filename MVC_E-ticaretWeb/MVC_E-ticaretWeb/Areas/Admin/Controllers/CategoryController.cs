@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MVC_E_ticaretWeb.Models;
 
 namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
@@ -21,16 +20,13 @@ namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-           
-                if (ModelState.IsValid)
-                {
-                    _context.Categories.Add(category); 
-                    _context.SaveChanges(); 
-                    return RedirectToAction("Index");
-                }
-                return View(category);
-            
-
+            if (ModelState.IsValid)
+            {
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(category);
         }
 
     }
