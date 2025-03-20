@@ -1,32 +1,42 @@
 ﻿@model MVC_E_ticaretWeb.Models.Product
+
 @{
-    ViewBag.Title = "Ürünleri Güncelle";
+    ViewBag.Title = "Ürünü Güncelle";
     Layout = "~/Views/Shared/AdminLayout.cshtml";
 }
 
-<h2 class="text-center">Kategori Güncelle</h2>
+<h2 class="text-center">Ürünü Güncelle</h2>
 
-<form asp-controller="Product" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+<form asp-controller="Product" asp-action="EditProduct" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+
     <div class="form-group">
         <label>Ürün Adı</label>
-        <input class="form-control" name="Name" required />
+        <input class="form-control" name="Name" value="@Model.Name" required />
     </div>
 
     <div class="form-group">
         <label>Ürün Fiyat</label>
-        <input type="number" step="0.01" class="form-control" name="Price" required />
+        <input type="number" step="0.01" class="form-control" name="Price" value="@Model.Price" required />
     </div>
 
     <div class="form-group">
         <label>Ürün Stok</label>
-        <input type="number" class="form-control" name="Stock" required />
+        <input type="number" class="form-control" name="Stock" value="@Model.Stock" required />
     </div>
 
     <div class="form-group">
-        <label>Ürün Resim</label>
-        <input type="file" class="form-control" name="ImageFile" accept="image/*" required />
+        <label>Mevcut Resim</label> <br />
+        @if (!string.IsNullOrEmpty(Model.Image))
+        {
+            <img src="@Model.Image" width="100" height="100" alt="Ürün Resmi" />
+        }
     </div>
 
-    <button type="submit" class="btn btn-primary mt-3">Kaydet</button>
-</form>
+    <div class="form-group">
+        <label>Yeni Resim (Değiştirmek isterseniz yükleyin)</label>
+        <input type="file" class="form-control" name="Image" accept="image/" />
+    </div>
 
+    <button type="submit" class="btn btn-primary mt-3">Güncelle</button>
+</form>

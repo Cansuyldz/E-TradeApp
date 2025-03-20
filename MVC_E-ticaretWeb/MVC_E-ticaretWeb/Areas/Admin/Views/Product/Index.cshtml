@@ -36,7 +36,7 @@
                     </a>
 
                     <!-- Silme Butonu (Form İle) -->
-                    <form method="post" action="@Url.Action("DeleteProduct", "Product")" onsubmit="return confirm('Bu kategoriyi silmek istiyor musunuz?');" style="display:inline;">
+                    <form method="post" action="@Url.Action("Delete", "Product")" onsubmit="return confirm('Bu kategoriyi silmek istiyor musunuz?');" style="display:inline;">
                         <input type="hidden" name="id" value="@product.Id" />
                         <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                     </form>

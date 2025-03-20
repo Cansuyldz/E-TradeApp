@@ -17,7 +17,7 @@ namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
             if (username == "admin" && password == "123456")
             {
                 HttpContext.Session.SetString("AdminUser", username);
-                return RedirectToAction("Index", "AdminPanel");
+                return RedirectToAction("Index", "Category");
             }
             ViewBag.Error = "Kullanıcı adı veya şifre hatalı!";
             return View();
@@ -26,7 +26,7 @@ namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("AdminUser");
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home", new { area = "Admin" });
         }
     }
 }

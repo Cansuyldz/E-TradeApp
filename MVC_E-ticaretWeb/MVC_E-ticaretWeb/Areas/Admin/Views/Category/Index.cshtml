@@ -24,12 +24,10 @@
                 <td>@category.Id</td>
                 <td>@category.Name</td>
                 <td>
-                    <!-- Güncelleme Butonu -->
                     <a href="@Url.Action("Edit", "Category", new { id = category.Id, area = "Admin" })" class="btn btn-warning btn-sm">
                         Güncelle
                     </a>
 
-                    <!-- Silme Butonu (Form İle) -->
                     <form method="post" action="@Url.Action("Delete", "Category")" onsubmit="return confirm('Bu kategoriyi silmek istiyor musunuz?');" style="display:inline;">
                         <input type="hidden" name="id" value="@category.Id" />
                         <button type="submit" class="btn btn-danger btn-sm">Sil</button>
