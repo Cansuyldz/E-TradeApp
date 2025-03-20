@@ -4,15 +4,15 @@ using Microsoft.AspNetCore.Http;
 namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class AdminController : Controller
+    public class HomeController : Controller
     {
-        public IActionResult Login()
+        public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public IActionResult Index(string username, string password)
         {
             if (username == "admin" && password == "123456")
             {
@@ -26,7 +26,7 @@ namespace MVC_E_ticaretWeb.Areas.Admin.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Remove("AdminUser");
-            return RedirectToAction("Login");
+            return RedirectToAction("Index");
         }
     }
 }
