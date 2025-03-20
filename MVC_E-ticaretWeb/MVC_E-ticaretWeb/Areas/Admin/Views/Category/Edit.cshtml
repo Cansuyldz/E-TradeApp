@@ -1,0 +1,21 @@
+﻿@model MVC_E_ticaretWeb.Models.Category
+@{
+    ViewBag.Title = "Kategori Güncelle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2 class="text-center">Kategori Güncelle</h2>
+
+<form asp-area="Admin" asp-controller="Category" asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>Kategori Adı</label>
+        <input class="form-control" name="Name" required />
+
+        <label>Kategori Açıklama</label>
+        <input class="form-control" name="Description" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Güncelle</button>
+</form>

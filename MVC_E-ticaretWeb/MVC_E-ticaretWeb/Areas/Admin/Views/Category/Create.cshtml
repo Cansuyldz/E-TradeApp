@@ -1,4 +1,8 @@
-﻿<form asp-area="Admin" asp-controller="Category" asp-action="Create" method="post">
+﻿@{
+    ViewBag.Title = "Kategoriler Ekle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+<form asp-area="Admin" asp-controller="Category" asp-action="Create" method="post">
     <div class="form-group">
         <label >Kategori Adı</label>
         <input  class="form-control" name="Name" required />

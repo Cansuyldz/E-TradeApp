@@ -1,0 +1,47 @@
+﻿@model IEnumerable<MVC_E_ticaretWeb.Models.Product>
+@{
+    ViewBag.Title = "Ürünler";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+
+<h2 class="text-center">Kategoriler</h2>
+<a href="@Url.Action("CreateProduct", "Product", new { area = "Admin" })" class="btn btn-success">
+    Yeni Ürün Ekle
+</a>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead class="bg-primary text-white">
+        <tr>
+            <th>#</th>
+            <th>Ürün Adı</th>
+            <th>Ürün Fiyatı</th>
+            <th>Ürün Stok</th>
+            <th>Ürün Resmi</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Stock</td>
+                <td>@product.Image</td>
+                <td>
+                    <!-- Güncelleme Butonu -->
+                    <a href="@Url.Action("EditProduct", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">
+                        Güncelle
+                    </a>
+
+                    <!-- Silme Butonu (Form İle) -->
+                    <form method="post" action="@Url.Action("DeleteProduct", "Product")" onsubmit="return confirm('Bu kategoriyi silmek istiyor musunuz?');" style="display:inline;">
+                        <input type="hidden" name="id" value="@product.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

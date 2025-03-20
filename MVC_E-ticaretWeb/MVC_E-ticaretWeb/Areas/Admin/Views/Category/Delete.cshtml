@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Kategoriler Ekle";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Name</td>
+        <td>
+            <form method="post" action="@Url.Action("Delete", "Category")" onsubmit="return confirm('Bu kategoriyi silmek istiyor musunuz?');">
+                <input type="hidden" name="id" value="@item.Id" />
+                <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+            </form>
+        </td>
+    </tr>
+}
